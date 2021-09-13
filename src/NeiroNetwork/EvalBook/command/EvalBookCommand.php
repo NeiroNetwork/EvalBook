@@ -52,24 +52,37 @@ class EvalBookCommand extends Command{
 					return true;
 
 				case "new":
+					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_NEW)){
+						// TODO: implement
+					}
 					return true;
 
 				case "save":
+					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_SAVE)){
+						// TODO: implement
+					}
 					return true;
 
 				case "load":
+					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_LOAD)){
+						// TODO: implement
+					}
 					return true;
 
 				case "exec":
 				case "execute":
 				case "run":
 				case "eval":
+					// TODO
 					return true;
 			}
 		}elseif(count($args) === 2){
 			switch(strtolower($args[0])){
 				case "perm":
 				case "permission":
+					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
+						// TODO: implement
+					}
 					return true;
 			}
 		}
