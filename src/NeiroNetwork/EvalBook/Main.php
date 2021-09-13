@@ -24,13 +24,8 @@ class Main extends PluginBase{
 
 	protected function onEnable() : void{
 		self::$instance = $this;
-		$this->preparePermissions();
+		EvalBookPermissions::registerCorePermissions();
 		$this->operators = new Config(Path::join($this->getDataFolder(), "whitelist.txt"), Config::ENUM);
-	}
-
-	private function preparePermissions() : void{
-		$root = DefaultPermissions::registerPermission(new Permission(EvalBookPermissions::ROOT_OPERATOR));
-		DefaultPermissions::registerPermission(new Permission("evalbook.test"), [$root]);
 	}
 
 	public function getOperators() : Config{
