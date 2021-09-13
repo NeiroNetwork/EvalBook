@@ -12,6 +12,8 @@ class EventListener implements Listener{
 
 	public function onLogin(PlayerLoginEvent $event) : void{
 		$player = $event->getPlayer();
-		$player->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
+		if(Main::getInstance()->getOperators()->exists($player->getName(), true)){
+			$player->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
+		}
 	}
 }
