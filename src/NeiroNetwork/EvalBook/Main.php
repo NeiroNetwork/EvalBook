@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\PluginTemplate;
+namespace NeiroNetwork\EvalBook;
 
 use pocketmine\plugin\PluginBase;
 

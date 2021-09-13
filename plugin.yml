@@ -1,4 +1,4 @@
-name: PluginTemplate
+name: EvalBook
 version: 0.1.0
-main: NeiroNetwork\PluginTemplate\Main
+main: NeiroNetwork\EvalBook\Main
 api: 4.0.0
