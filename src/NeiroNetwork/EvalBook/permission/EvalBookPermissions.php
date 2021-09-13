@@ -7,16 +7,18 @@ namespace NeiroNetwork\EvalBook\permission;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 
-abstract class EvalBookPermissions extends DefaultPermissions{
+abstract class EvalBookPermissions{
 
-	public const ROOT_CONSOLE = EvalBookPermissionNames::GROUP_OPERATOR;
 	public const ROOT_OPERATOR = EvalBookPermissionNames::GROUP_OPERATOR;
-	public const ROOT_USER = EvalBookPermissionNames::GROUP_EVERYONE;
+	public const ROOT_OP = DefaultPermissions::ROOT_OPERATOR;
+	public const ROOT_EVERYONE = EvalBookPermissionNames::GROUP_EVERYONE;
 
-	public static function registerCorePermissions() : void{
-		$root = self::registerPermission(new Permission(self::ROOT_OPERATOR));
-		$everyone = self::registerPermission(new Permission(self::ROOT_USER), [$root]);
-		self::registerPermission(new Permission("evalbook.test"), [$root]);
-		self::registerPermission(new Permission("evalbook.test.everyone"), [$everyone]);
+	public static function registerPermissions() : void{
+		$op = DefaultPermissions::registerPermission(new Permission(self::ROOT_OPERATOR));
+		$user = DefaultPermissions::registerPermission(new Permission(self::ROOT_EVERYONE), [$op]);
+		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_EVALBOOK), [$op]);
+		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_CODEBOOK), [$op]);
+		// TODO
+		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_CODEBOOK_OP), []);
 	}
 }
