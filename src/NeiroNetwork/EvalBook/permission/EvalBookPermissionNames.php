@@ -7,7 +7,6 @@ namespace NeiroNetwork\EvalBook\permission;
 final class EvalBookPermissionNames{
 
 	public const GROUP_OPERATOR = "evalbook.group.operator";
-	public const GROUP_EVERYONE = "evalbook.group.everyone";
 
 	public const EXECUTE_EVALBOOK = "evalbook.exec.evalbook";
 	public const EXECUTE_CODEBOOK = "evalbook.exec.codebook";
