@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
@@ -28,6 +29,8 @@ class Main extends PluginBase{
 
 		EvalBookPermissions::registerPermissions();
 
-		$this->operators = new Config(Path::join($this->getDataFolder(), "whitelist.txt"), Config::ENUM);
+		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);
+
+		$this->getServer()->getCommandMap()->registerAll($this->getName(), [new EvalBookCommand("evalbook")]);
 	}
 }
