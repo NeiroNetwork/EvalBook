@@ -23,7 +23,8 @@ class EventListener implements Listener{
 
 	public function onEditBook(PlayerEditBookEvent $event) : void{
 		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK && EvalBook::equals($event->getOldBook())){
-			$event->setNewBook(CodeBook::create($event->getOldBook(), $event->getNewBook()));
+			/** @noinspection PhpParamsInspection */
+			$event->setNewBook(CodeBook::create($event->getOldBook(), $event->getNewBook(), $event->getPlayer()));
 		}
 	}
 }

@@ -6,7 +6,9 @@ namespace NeiroNetwork\EvalBook\item;
 
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
-use pocketmine\item\WritableBookBase;
+use pocketmine\item\WritableBook;
+use pocketmine\item\WrittenBook;
+use pocketmine\player\Player;
 
 final class CodeBook extends ExecutableBook{
 
@@ -16,10 +18,13 @@ final class CodeBook extends ExecutableBook{
 
 	protected static function equalsInternal(Item $item) : bool{
 		return VanillaItems::WRITTEN_BOOK()->equals($item, true, false)
-			&& $item->getCustomName() === "CodeBook";
+			&& str_starts_with($item->getCustomName(), "CodeBook");
 	}
 
-	public static function create(WritableBookBase $before, WritableBookBase $after) : WritableBookBase{
-		return $after->setCustomName("CodeBook")->setLore($before->getLore());
+	public static function create(WritableBook $before, WrittenBook $after, Player $author = null) : WrittenBook{
+		if($author !== null){
+			$after->setAuthor($author->getName());
+		}
+		return $after->setCustomName("CodeBook - " . $after->getTitle())->setLore($before->getLore());
 	}
 }
