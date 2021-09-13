@@ -8,10 +8,9 @@ final class EvalBookPermissionNames{
 
 	public const GROUP_OPERATOR = "evalbook.group.operator";
 
-	public const EXECUTE_EVALBOOK = "evalbook.exec.evalbook";
-	public const EXECUTE_CODEBOOK = "evalbook.exec.codebook";
-	public const EXECUTE_CODEBOOK_OP = "evalbook.exec.codebook.op";
-	public const EXECUTE_COODEBOOK_EVERYONE = "evalbook.exec.codebook.everyone";
+	public const EXECUTE_DEFAULT = "evalbook.execute.default";
+	public const EXECUTE_OP = "evalbook.execute.op";
+	public const EXECUTE_EVERYONE = "evalbook.execute.everyone";
 
 	public const COMMAND_RELOAD = "evalbook.command.reload";
 	public const COMMAND_NEW = "evalbook.command.new";

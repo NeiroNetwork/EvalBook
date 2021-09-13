@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\command;
 
+use NeiroNetwork\EvalBook\item\EvalBook;
 use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\inventory\InventoryHolder;
 use pocketmine\Server;
 
 class EvalBookCommand extends Command{
@@ -53,7 +55,9 @@ class EvalBookCommand extends Command{
 
 				case "new":
 					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_NEW)){
-						// TODO: implement
+						if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($item = EvalBook::new())){
+							$sender->getInventory()->addItem($item);
+						}
 					}
 					return true;
 
