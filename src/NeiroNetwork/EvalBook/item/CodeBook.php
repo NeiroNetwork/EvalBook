@@ -6,8 +6,7 @@ namespace NeiroNetwork\EvalBook\item;
 
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
-use pocketmine\item\WritableBook;
-use pocketmine\item\WrittenBook;
+use pocketmine\item\WritableBookBase;
 
 final class CodeBook extends ExecutableBook{
 
@@ -20,7 +19,7 @@ final class CodeBook extends ExecutableBook{
 			&& $item->getCustomName() === "CodeBook";
 	}
 
-	public static function create(WritableBook $before, WrittenBook $after) : WrittenBook{
+	public static function create(WritableBookBase $before, WritableBookBase $after) : WritableBookBase{
 		return $after->setCustomName("CodeBook")->setLore($before->getLore());
 	}
 }

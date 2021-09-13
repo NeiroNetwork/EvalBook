@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use NeiroNetwork\EvalBook\item\CodeBook;
+use NeiroNetwork\EvalBook\item\EvalBook;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerEditBookEvent;
@@ -20,8 +22,8 @@ class EventListener implements Listener{
 	}
 
 	public function onEditBook(PlayerEditBookEvent $event) : void{
-		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK){
-			// TODO
+		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK && EvalBook::equals($event->getOldBook())){
+			$event->setNewBook(CodeBook::create($event->getOldBook(), $event->getNewBook()));
 		}
 	}
 }
