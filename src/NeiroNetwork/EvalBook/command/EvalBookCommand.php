@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\command;
 
 use NeiroNetwork\EvalBook\item\EvalBook;
+use NeiroNetwork\EvalBook\item\ExecutableBook;
 use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\entity\Human;
 use pocketmine\inventory\InventoryHolder;
+use pocketmine\permission\PermissionManager;
 use pocketmine\Server;
 
 class EvalBookCommand extends Command{
@@ -85,7 +88,17 @@ class EvalBookCommand extends Command{
 				case "perm":
 				case "permission":
 					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
-						// TODO: implement
+						$permission = strtolower($args[1]);
+						if(PermissionManager::getInstance()->getPermission(EvalBookPermissionNames::EVALBOOK_EXECUTE . ".$permission") === null){
+							Command::broadcastCommandMessage($sender, "Permission \"$permission\" does not exist.");
+							return true;
+						}
+						if(!$sender instanceof Human || !ExecutableBook::equals($item = $sender->getInventory()->getItemInHand())){
+							Command::broadcastCommandMessage($sender, "Couldn't find executable book.");
+							return true;
+						}
+						$sender->getInventory()->setItemInHand($item->setLore([$permission]));
+						Command::broadcastCommandMessage($sender, "Execute permissions have been successfully changed.");
 					}
 					return true;
 			}

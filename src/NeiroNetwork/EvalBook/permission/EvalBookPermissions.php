@@ -15,9 +15,10 @@ abstract class EvalBookPermissions{
 	public static function registerPermissions() : void{
 		$operator = DefaultPermissions::registerPermission(new Permission(self::ROOT_OPERATOR));
 		$op = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_OPERATOR);
+		$console = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_CONSOLE);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_DEFAULT), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_OP), [$operator, $op]);
-		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_RELOAD), [$operator]);
+		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_RELOAD), [$operator, $console]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_NEW), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_SAVE), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_LOAD), [$operator]);
@@ -25,8 +26,6 @@ abstract class EvalBookPermissions{
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_EXEC), [$operator]);
 
 		$everyone = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER);
-		$everyone->addChild(EvalBookPermissionNames::EXECUTE_EVERYONE, true);
-		$console = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_CONSOLE);
-		$console->addChild(EvalBookPermissionNames::COMMAND_RELOAD, true);
+		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_EVERYONE), [$everyone]);
 	}
 }
