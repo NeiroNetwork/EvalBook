@@ -6,6 +6,8 @@ namespace NeiroNetwork\EvalBook;
 
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\console\ConsoleCommandSender;
+use pocketmine\permission\DefaultPermissions;
+use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use pocketmine\utils\Config;
@@ -27,22 +29,12 @@ class Main extends PluginBase{
 	protected function onEnable() : void{
 		self::$instance = $this;
 
-		EvalBookPermissions::registerCorePermissions();
+		EvalBookPermissions::registerPermissions();
 
 		$this->operators = new Config(Path::join($this->getDataFolder(), "whitelist.txt"), Config::ENUM);
 
-		/**
-		 * not work
-		 * @see https://github.com/pmmp/PocketMine-MP/issues/4456
-		 */
-		foreach($this->getServer()->getBroadcastChannelSubscribers(Server::BROADCAST_CHANNEL_USERS) as $subscriber){
-			echo $subscriber->getName() . "\n";
-			if($subscriber instanceof ConsoleCommandSender){
-				$subscriber->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
-				$subscriber->setBasePermission(EvalBookPermissions::ROOT_USER, true);
-				var_dump($subscriber);
-			}
-		}
+		$console = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_CONSOLE);
+		$console->addChild(EvalBookPermissions::ROOT_OPERATOR, true);
 
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 	}
