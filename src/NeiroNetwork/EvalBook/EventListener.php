@@ -6,7 +6,9 @@ namespace NeiroNetwork\EvalBook;
 
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerEditBookEvent;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\network\mcpe\protocol\BookEditPacket;
 
 class EventListener implements Listener{
 
@@ -14,6 +16,12 @@ class EventListener implements Listener{
 		$player = $event->getPlayer();
 		if(Main::getInstance()->getOperators()->exists($player->getName(), true)){
 			$player->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
+		}
+	}
+
+	public function onEditBook(PlayerEditBookEvent $event) : void{
+		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK){
+			// TODO
 		}
 	}
 }

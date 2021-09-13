@@ -11,7 +11,11 @@ use pocketmine\item\WrittenBook;
 
 final class CodeBook extends ExecutableBook{
 
-	public static function equalsInternal(Item $item) : bool{
+	public static function equals(Item $item) : bool{
+		return self::equalsInternal($item) && parent::equalsInternal($item);
+	}
+
+	protected static function equalsInternal(Item $item) : bool{
 		return VanillaItems::WRITTEN_BOOK()->equals($item, true, false)
 			&& $item->getCustomName() === "CodeBook";
 	}
