@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\item;
 
+use NeiroNetwork\EvalBook\CodeExecutor;
+use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
-use NeiroNetwork\EvalBook\utils\CodeExecutor;
 use NeiroNetwork\EvalBook\utils\Exception;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
@@ -25,7 +26,7 @@ abstract class ExecutableBook{
 			&& ($lore[0] === "default" || $lore[0] === "op" || $lore[0] === "everyone");
 	}
 
-	public static function getExecutePermission(WritableBookBase|string $bookOrPerm) : ?Permission{
+	public static function getPermission(WritableBookBase|string $bookOrPerm) : ?Permission{
 		if(!is_string($bookOrPerm)){
 			$bookOrPerm = $bookOrPerm->getLore()[0] ?? "";
 		}
@@ -35,10 +36,11 @@ abstract class ExecutableBook{
 	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
 		try{
 			var_dump($code = self::parseBookCode($book));
-			CodeExecutor::eval($code);
+			var_dump($sense = CodeSense::injectImport($code));
+			CodeExecutor::eval($sense);
 		}catch(\Throwable $exception){
 			// fatal error はどうあがいてもキャッチできない
-			// 例えばクラスの間違った継承やクラスの重複した登録
+			// 例えばクラスの間違った継承やクラス/関数の重複した登録
 			$executor?->sendMessage(TextFormat::RED . Exception::toString($exception));
 			return false;
 		}

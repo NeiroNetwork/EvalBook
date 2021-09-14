@@ -83,7 +83,7 @@ class EvalBookCommand extends Command{
 				case "eval":
 					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_EXEC)
 						&& ($item = $this->checkItem($sender))
-						&& $this->testPermission($sender, ExecutableBook::getExecutePermission($item)->getName())
+						&& $this->testPermission($sender, ExecutableBook::getPermission($item)->getName())
 					) ExecutableBook::execute($item, $sender);
 					return true;
 			}
@@ -92,7 +92,7 @@ class EvalBookCommand extends Command{
 				case "perm":
 				case "permission":
 					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
-						if(ExecutableBook::getExecutePermission($permission = strtolower($args[1])) === null){
+						if(ExecutableBook::getPermission($permission = strtolower($args[1])) === null){
 							$sender->sendMessage("Permission \"$permission\" does not exist.");
 							return true;
 						}
