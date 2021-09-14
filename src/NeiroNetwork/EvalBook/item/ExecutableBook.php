@@ -7,6 +7,7 @@ namespace NeiroNetwork\EvalBook\item;
 use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use NeiroNetwork\EvalBook\utils\Exception;
+use NeiroNetwork\EvalBook\utils\FakePluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
 use pocketmine\item\WritableBookBase;
@@ -32,14 +33,14 @@ abstract class ExecutableBook{
 		return PermissionManager::getInstance()->getPermission(EvalBookPermissionNames::EVALBOOK_EXECUTE . ".$bookOrPerm");
 	}
 
-	public static function execute(WritableBookBase $book, CommandSender $executer = null) : bool{
+	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
 		try{
 			var_dump($code = self::parseBookCode($book));
-			Main::getInstance()->internalEvalInPluginBase($code);
+			FakePluginBase::eval($code);
 		}catch(\Throwable $exception){
 			// fatal error はどうあがいてもキャッチできない
 			// 例えばクラスの間違った継承やクラスの重複した登録
-			$executer?->sendMessage(TextFormat::RED . Exception::toString($exception));
+			$executor?->sendMessage(TextFormat::RED . Exception::toString($exception));
 			return false;
 		}
 		return true;
