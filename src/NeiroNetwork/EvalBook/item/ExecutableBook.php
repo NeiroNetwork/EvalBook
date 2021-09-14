@@ -34,9 +34,9 @@ abstract class ExecutableBook{
 	}
 
 	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
+		var_dump($code = self::parseBookCode($book));
+		var_dump($sense = CodeSense::injectImport($code));
 		try{
-			var_dump($code = self::parseBookCode($book));
-			var_dump($sense = CodeSense::injectImport($code));
 			CodeExecutor::eval($sense);
 		}catch(\Throwable $exception){
 			// fatal error はどうあがいてもキャッチできない

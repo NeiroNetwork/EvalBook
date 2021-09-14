@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
 class Imports{
 	use SingletonTrait;
 
-	public const WELL_KNOWN_IMPORTS = [
+	public const SINGLE_IMPORT_LIST = [
 		Uuid::class,
 		Attribute::class,
 		GameMode::class,
@@ -39,7 +39,7 @@ class Imports{
 		foreach($classes as $list){
 			if(count($list) > 1){
 				foreach($list as $class){
-					if(in_array($class, self::WELL_KNOWN_IMPORTS, true)){
+					if(in_array($class, self::SINGLE_IMPORT_LIST, true)){
 						$this->importClasses[] = $class;
 						continue 2;
 					}

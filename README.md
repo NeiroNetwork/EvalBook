@@ -38,17 +38,24 @@
 use pocketmine\block\Bed as BlockBed;
 use pocketmine\item\Bed as ItemBed;
 
-$listener = new class() implements Listener{
+$listener = new class($this) implements Listener{
+    function __construct(Plugin $plugin){
+        $this->plugin = $plugin;
+    }
     function onInteract(PlayerInteractEvent $event){
         $player = $event->getPlayer();
         if($event->getBlock() instanceof BlockBed && $event->getItem() instanceof ItemBed){
             $callback = function() use ($player) : void{
                 $player->sendMessage("ベッドをベッドでタッチしてから10秒経ちました");
             };
-            $this->getScheduler()->scheduleDelayedTask(new ClosureTask($callback), 200);
+            $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask($callback), 200);
         }
     }
 };
 
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
+```
+
+```php
+//こんな感じにも書けます
 ```
