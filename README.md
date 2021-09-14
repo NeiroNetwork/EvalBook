@@ -55,7 +55,3 @@ $listener = new class($this) implements Listener{
 
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 ```
-
-```php
-//こんな感じにも書けます
-```
