@@ -33,4 +33,9 @@ class Main extends PluginBase{
 
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
 	}
+
+	/** @internal */
+	public function internalEvalInPluginBase(string $code) : void{
+		eval($code);	// HACK!
+	}
 }

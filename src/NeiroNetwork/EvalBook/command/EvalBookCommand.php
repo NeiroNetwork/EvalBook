@@ -14,7 +14,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\entity\Human;
 use pocketmine\inventory\InventoryHolder;
-use pocketmine\item\WritableBook;
+use pocketmine\item\WritableBookBase;
 use pocketmine\player\Player;
 use pocketmine\Server;
 
@@ -110,7 +110,7 @@ class EvalBookCommand extends Command{
 		throw new InvalidCommandSyntaxException();
 	}
 
-	private function checkItem(CommandSender $sender) : ?WritableBook{
+	private function checkItem(CommandSender $sender) : ?WritableBookBase{
 		if(!$sender instanceof Human || !ExecutableBook::equals($item = $sender->getInventory()->getItemInHand())){
 			$sender->sendMessage("Couldn't find executable book.");
 			return null;
