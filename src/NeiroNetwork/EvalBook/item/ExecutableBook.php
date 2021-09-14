@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\item;
 
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
+use NeiroNetwork\EvalBook\utils\Exception;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
 use pocketmine\item\WritableBook;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
+use pocketmine\utils\TextFormat;
 
 abstract class ExecutableBook{
 
@@ -29,24 +31,24 @@ abstract class ExecutableBook{
 		return PermissionManager::getInstance()->getPermission(EvalBookPermissionNames::EVALBOOK_EXECUTE . ".$bookOrPerm");
 	}
 
-	public static function execute(WritableBook $book, CommandSender $sender = null) : bool{
+	public static function execute(WritableBook $book, CommandSender $executer = null) : bool{
 		try{
 			var_dump(self::parseBookCode($book));
 			eval(self::parseBookCode($book));
 		}catch(\Throwable $exception){
-			// TODO
+			$executer?->sendMessage(TextFormat::RED . Exception::toString($exception));
 			return false;
 		}
 		return true;
 	}
 
 	public static function parseBookCode(WritableBook $book) : string{
-		$stack = "";
+		$stack = [];
 		foreach($book->getPages() as $page){
-			if(!empty($text = $page->getText())){
-				$stack .= $text . (str_ends_with($text, "\n") ? "" : "\n");
+			if(!empty($text = trim($page->getText()))){
+				$stack[] = $text;
 			}
 		}
-		return $stack;
+		return implode(PHP_EOL, $stack);
 	}
 }

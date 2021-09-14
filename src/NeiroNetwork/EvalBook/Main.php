@@ -31,6 +31,6 @@ class Main extends PluginBase{
 
 		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);
 
-		$this->getServer()->getCommandMap()->registerAll($this->getName(), [new EvalBookCommand("evalbook")]);
+		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
 	}
 }

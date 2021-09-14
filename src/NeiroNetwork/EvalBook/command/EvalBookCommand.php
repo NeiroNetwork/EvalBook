@@ -84,7 +84,7 @@ class EvalBookCommand extends Command{
 					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_EXEC)
 						&& ($item = $this->checkItem($sender))
 						&& $this->testPermission($sender, ExecutableBook::getExecutePermission($item)->getName())
-					) ExecutableBook::execute($item);
+					) ExecutableBook::execute($item, $sender);
 					return true;
 			}
 		}elseif(count($args) === 2){
