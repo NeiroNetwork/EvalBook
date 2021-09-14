@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\item;
 
-use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
+use NeiroNetwork\EvalBook\utils\CodeExecutor;
 use NeiroNetwork\EvalBook\utils\Exception;
-use NeiroNetwork\EvalBook\utils\FakePluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
 use pocketmine\item\WritableBookBase;
@@ -36,7 +35,7 @@ abstract class ExecutableBook{
 	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
 		try{
 			var_dump($code = self::parseBookCode($book));
-			FakePluginBase::eval($code);
+			CodeExecutor::eval($code);
 		}catch(\Throwable $exception){
 			// fatal error はどうあがいてもキャッチできない
 			// 例えばクラスの間違った継承やクラスの重複した登録

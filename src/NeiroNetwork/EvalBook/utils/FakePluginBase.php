@@ -9,11 +9,9 @@ use NeiroNetwork\EvalBook\Main;
 use pocketmine\plugin\PluginLogger;
 use pocketmine\scheduler\TaskScheduler;
 use pocketmine\Server;
-use pocketmine\utils\SingletonTrait;
 use Webmozart\PathUtil\Path;
 
 class FakePluginBase{
-	use SingletonTrait;
 
 	private Server $server;
 	private string $dataFolder;
@@ -32,14 +30,6 @@ class FakePluginBase{
 
 	public function getName() : string{
 		return "eval()'d code";
-	}
-
-	public static function eval(string $code) : void{
-		self::getInstance()->evalInternal($code);
-	}
-
-	private function evalInternal(string $code) : void{
-		eval($code);
 	}
 
 	public function getDataFolder() : string{
