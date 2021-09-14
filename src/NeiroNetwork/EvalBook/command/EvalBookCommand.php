@@ -14,7 +14,8 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\entity\Human;
 use pocketmine\inventory\InventoryHolder;
-use pocketmine\permission\PermissionManager;
+use pocketmine\item\WritableBook;
+use pocketmine\player\Player;
 use pocketmine\Server;
 
 class EvalBookCommand extends Command{
@@ -80,7 +81,10 @@ class EvalBookCommand extends Command{
 				case "execute":
 				case "run":
 				case "eval":
-					// TODO
+					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_EXEC)
+						&& ($item = $this->checkItem($sender))
+						&& $this->testPermission($sender, ExecutableBook::getExecutePermission($item)->getName())
+					) ExecutableBook::execute($item);
 					return true;
 			}
 		}elseif(count($args) === 2){
@@ -88,15 +92,14 @@ class EvalBookCommand extends Command{
 				case "perm":
 				case "permission":
 					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
-						$permission = strtolower($args[1]);
-						if(PermissionManager::getInstance()->getPermission(EvalBookPermissionNames::EVALBOOK_EXECUTE . ".$permission") === null){
-							Command::broadcastCommandMessage($sender, "Permission \"$permission\" does not exist.");
+						if(ExecutableBook::getExecutePermission($permission = strtolower($args[1])) === null){
+							$sender->sendMessage("Permission \"$permission\" does not exist.");
 							return true;
 						}
-						if(!$sender instanceof Human || !ExecutableBook::equals($item = $sender->getInventory()->getItemInHand())){
-							Command::broadcastCommandMessage($sender, "Couldn't find executable book.");
+						if($item = $this->checkItem($sender)){
 							return true;
 						}
+						/** @var Player $sender */
 						$sender->getInventory()->setItemInHand($item->setLore([$permission]));
 						Command::broadcastCommandMessage($sender, "Execute permissions have been successfully changed.");
 					}
@@ -105,5 +108,13 @@ class EvalBookCommand extends Command{
 		}
 
 		throw new InvalidCommandSyntaxException();
+	}
+
+	private function checkItem(CommandSender $sender) : ?WritableBook{
+		if(!$sender instanceof Human || !ExecutableBook::equals($item = $sender->getInventory()->getItemInHand())){
+			$sender->sendMessage("Couldn't find executable book.");
+			return null;
+		}
+		return $item;
 	}
 }
