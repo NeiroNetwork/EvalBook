@@ -35,21 +35,9 @@
   - `try-catch`あるいは`set_exception_handler`では処理できません。
 
 ```php
-use pocketmine\block\Bed as BlockBed;
-use pocketmine\item\Bed as ItemBed;
-
-$listener = new class($this) implements Listener{
-    function __construct(Plugin $plugin){
-        $this->plugin = $plugin;
-    }
-    function onInteract(PlayerInteractEvent $event){
-        $player = $event->getPlayer();
-        if($event->getBlock() instanceof BlockBed && $event->getItem() instanceof ItemBed){
-            $callback = function() use ($player) : void{
-                $player->sendMessage("ベッドをベッドでタッチしてから10秒経ちました");
-            };
-            $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask($callback), 200);
-        }
+$listener = new class() implements Listener{
+    function onInteract(PlayerJumpEvent $event){
+        $event->getPlayer()->sendTip("Jump!");
     }
 };
 
