@@ -36,7 +36,7 @@
 
 ```php
 $listener = new class() implements Listener{
-    function onInteract(PlayerJumpEvent $event){
+    function onJump(PlayerJumpEvent $event){
         $event->getPlayer()->sendTip("Jump!");
     }
 };
