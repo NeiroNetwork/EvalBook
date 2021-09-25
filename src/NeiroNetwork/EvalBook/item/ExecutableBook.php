@@ -35,7 +35,10 @@ abstract class ExecutableBook{
 
 	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
 		var_dump($code = self::parseBookCode($book));
-		var_dump($sense = CodeSense::injectImport($code));
+		$sense = CodeSense::injectImport($code);
+		if($executor !== null){
+			$sense = CodeSense::injectBookExecutedPlayer($sense, $executor);
+		}
 		try{
 			CodeExecutor::eval($sense);
 		}catch(\Throwable $exception){
