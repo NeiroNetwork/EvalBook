@@ -1,4 +1,4 @@
 name: EvalBook
-version: 1.0.0
+version: 0.0.1
 main: NeiroNetwork\EvalBook\Main
 api: 4.0.0
