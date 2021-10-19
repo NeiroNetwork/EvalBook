@@ -19,6 +19,14 @@ class Main extends PluginBase{
 		return self::$instance;
 	}
 
+	public static function eval(string $code) : void{
+		self::$instance->evalInternal($code);
+	}
+
+	private function evalInternal(string $code) : void{
+		eval($code);
+	}
+
 	public function getOperators() : Config{
 		return $this->operators;
 	}

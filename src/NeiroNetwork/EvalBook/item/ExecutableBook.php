@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\item;
 
-use NeiroNetwork\EvalBook\CodeExecutor;
 use NeiroNetwork\EvalBook\codesense\CodeSense;
+use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use NeiroNetwork\EvalBook\utils\Exception;
 use pocketmine\command\CommandSender;
@@ -40,7 +40,7 @@ abstract class ExecutableBook{
 			$sense = CodeSense::injectBookExecutedPlayer($sense, $executor);
 		}
 		try{
-			CodeExecutor::eval($sense);
+			Main::eval($sense);
 		}catch(\Throwable $exception){
 			// fatal error はどうあがいてもキャッチできない
 			// 例えばクラスの間違った継承やクラス/関数の重複した登録
