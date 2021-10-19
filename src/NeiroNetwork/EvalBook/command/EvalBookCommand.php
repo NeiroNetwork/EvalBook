@@ -96,7 +96,7 @@ class EvalBookCommand extends Command{
 							$sender->sendMessage("Permission \"$permission\" does not exist.");
 							return true;
 						}
-						if($item = $this->checkItem($sender)){
+						if(!($item = $this->checkItem($sender))){
 							return true;
 						}
 						/** @var Player $sender */
