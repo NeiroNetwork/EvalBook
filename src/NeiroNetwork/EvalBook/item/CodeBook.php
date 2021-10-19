@@ -17,7 +17,7 @@ final class CodeBook extends ExecutableBook{
 	}
 
 	protected static function equalsInternal(Item $item) : bool{
-		return VanillaItems::WRITTEN_BOOK()->equals($item, true, false);
+		return VanillaItems::WRITTEN_BOOK()->equals($item, true, false) && $item->hasCustomName();
 	}
 
 	public static function create(WritableBook $before, WrittenBook $after, Player $author = null) : WrittenBook{
