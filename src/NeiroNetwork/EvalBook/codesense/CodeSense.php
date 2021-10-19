@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\codesense;
 
 use pocketmine\command\CommandSender;
-use pocketmine\player\Player;
 
 class CodeSense{
 

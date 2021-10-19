@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\codesense;
 
-use NeiroNetwork\EvalBook\Main;
 use pocketmine\entity\Attribute;
 use pocketmine\player\GameMode;
 use pocketmine\utils\SingletonTrait;
@@ -24,9 +23,7 @@ class Imports{
 	}
 
 	/** @var string[] */
-	private array $importClasses = [
-		Main::class,
-	];
+	private array $importClasses = [];
 
 	public function __construct(){
 		$classes = [];

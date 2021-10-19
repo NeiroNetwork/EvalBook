@@ -17,14 +17,13 @@ final class CodeBook extends ExecutableBook{
 	}
 
 	protected static function equalsInternal(Item $item) : bool{
-		return VanillaItems::WRITTEN_BOOK()->equals($item, true, false)
-			&& str_starts_with($item->getCustomName(), "CodeBook");
+		return VanillaItems::WRITTEN_BOOK()->equals($item, true, false);
 	}
 
 	public static function create(WritableBook $before, WrittenBook $after, Player $author = null) : WrittenBook{
 		if($author !== null){
 			$after->setAuthor($author->getName());
 		}
-		return $after->setCustomName("CodeBook - " . $after->getTitle())->setLore($before->getLore());
+		return $after->setCustomName($after->getTitle())->setLore($before->getLore());
 	}
 }
