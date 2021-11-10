@@ -24,13 +24,14 @@ class EvalBookCommand extends Command{
 		parent::__construct(
 			$name,
 			"EvalBook Command",
-			"/evalbook <reload|new|perm|exec>"
+			"/evalbook <reload|new|perm|exec|customname>"
 		);
 		$this->setPermission(implode(";", [
 			EvalBookPermissionNames::COMMAND_RELOAD,
 			EvalBookPermissionNames::COMMAND_NEW,
 			EvalBookPermissionNames::COMMAND_PERM,
 			EvalBookPermissionNames::COMMAND_EXEC,
+			EvalBookPermissionNames::COMMAND_CUSTOM_NAME,
 		]));
 	}
 
@@ -85,6 +86,19 @@ class EvalBookCommand extends Command{
 					/** @var Player $sender */
 					$sender->getInventory()->setItemInHand($item->setLore([$permission]));
 					Command::broadcastCommandMessage($sender, "Execute permissions have been successfully changed to $permission.");
+				}
+				return true;
+
+			case "customname":
+			case "name":
+				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_CUSTOM_NAME) && ($item = $this->checkItem($sender))){
+					if(empty(trim($customName = implode(" ", $args)))){
+						$sender->sendMessage("Custom name must not be empty.");
+						return true;
+					}
+					/** @var Player $sender */
+					$sender->getInventory()->setItemInHand($item->setCustomName($customName));
+					Command::broadcastCommandMessage($sender, "Custom name of the book has been changed.");
 				}
 				return true;
 		}

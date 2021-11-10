@@ -21,6 +21,7 @@ abstract class EvalBookPermissions{
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_RELOAD), [$operator, $console]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_NEW), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_PERM), [$operator]);
+		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_CUSTOM_NAME), [$operator]);
 
 		$everyone = PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_EVERYONE), [$everyone]);

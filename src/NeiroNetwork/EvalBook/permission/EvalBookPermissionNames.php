@@ -17,4 +17,5 @@ final class EvalBookPermissionNames{
 	public const COMMAND_NEW = "evalbook.command.new";
 	public const COMMAND_PERM = "evalbook.command.perm";
 	public const COMMAND_EXEC = "evalbook.command.exec";
+	public const COMMAND_CUSTOM_NAME = "evalbook.command.custom_name";
 }
