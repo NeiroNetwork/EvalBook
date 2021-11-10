@@ -15,8 +15,6 @@ final class EvalBookPermissionNames{
 
 	public const COMMAND_RELOAD = "evalbook.command.reload";
 	public const COMMAND_NEW = "evalbook.command.new";
-	public const COMMAND_SAVE = "evalbook.command.save";
-	public const COMMAND_LOAD = "evalbook.command.load";
 	public const COMMAND_PERM = "evalbook.command.perm";
 	public const COMMAND_EXEC = "evalbook.command.exec";
 }

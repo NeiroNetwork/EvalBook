@@ -24,13 +24,11 @@ class EvalBookCommand extends Command{
 		parent::__construct(
 			$name,
 			"EvalBook Command",
-			"/evalbook <reload|new|save|load|perm|exec>"
+			"/evalbook <reload|new|perm|exec>"
 		);
 		$this->setPermission(implode(";", [
 			EvalBookPermissionNames::COMMAND_RELOAD,
 			EvalBookPermissionNames::COMMAND_NEW,
-			EvalBookPermissionNames::COMMAND_SAVE,
-			EvalBookPermissionNames::COMMAND_LOAD,
 			EvalBookPermissionNames::COMMAND_PERM,
 			EvalBookPermissionNames::COMMAND_EXEC,
 		]));
@@ -62,18 +60,6 @@ class EvalBookCommand extends Command{
 						if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($item = EvalBook::new())){
 							$sender->getInventory()->addItem($item);
 						}
-					}
-					return true;
-
-				case "save":
-					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_SAVE)){
-						// TODO: implement
-					}
-					return true;
-
-				case "load":
-					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_LOAD)){
-						// TODO: implement
 					}
 					return true;
 

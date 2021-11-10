@@ -20,8 +20,6 @@ abstract class EvalBookPermissions{
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::EXECUTE_OP), [$operator, $op]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_RELOAD), [$operator, $console]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_NEW), [$operator]);
-		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_SAVE), [$operator]);
-		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_LOAD), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_PERM), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_EXEC), [$operator]);
 
