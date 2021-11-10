@@ -39,58 +39,54 @@ class EvalBookCommand extends Command{
 			return true;
 		}
 
-		if(count($args) === 1){
-			switch(strtolower($args[0])){
-				case "reload":
-					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_RELOAD)){
-						$operators = Main::getInstance()->getOperators();
-						foreach($operators->getAll(true) as $name){
-							Server::getInstance()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, false);
-						}
-						$operators->reload();
-						foreach($operators->getAll(true) as $name){
-							Server::getInstance()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
-						}
-						Command::broadcastCommandMessage($sender, "Configuration file has been reloaded.");
+		switch(strtolower(array_shift($args))){
+			case "reload":
+				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_RELOAD)){
+					$operators = Main::getInstance()->getOperators();
+					foreach($operators->getAll(true) as $name){
+						Server::getInstance()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, false);
 					}
-					return true;
+					$operators->reload();
+					foreach($operators->getAll(true) as $name){
+						Server::getInstance()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
+					}
+					Command::broadcastCommandMessage($sender, "Configuration file has been reloaded.");
+				}
+				return true;
 
-				case "new":
-					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_NEW)){
-						if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($item = EvalBook::new())){
-							$sender->getInventory()->addItem($item);
-						}
+			case "new":
+				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_NEW)){
+					if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($item = EvalBook::new())){
+						$sender->getInventory()->addItem($item);
 					}
-					return true;
+				}
+				return true;
 
-				case "exec":
-				case "execute":
-				case "run":
-				case "eval":
-					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_EXEC)
-						&& ($item = $this->checkItem($sender))
-						&& $this->testPermission($sender, ExecutableBook::getPermission($item)->getName())
-					) ExecutableBook::execute($item, $sender);
-					return true;
-			}
-		}elseif(count($args) === 2){
-			switch(strtolower($args[0])){
-				case "perm":
-				case "permission":
-					if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
-						if(ExecutableBook::getPermission($permission = strtolower($args[1])) === null){
-							$sender->sendMessage("Permission \"$permission\" does not exist.");
-							return true;
-						}
-						if(!($item = $this->checkItem($sender))){
-							return true;
-						}
-						/** @var Player $sender */
-						$sender->getInventory()->setItemInHand($item->setLore([$permission]));
-						Command::broadcastCommandMessage($sender, "Execute permissions have been successfully changed to $permission.");
+			case "exec":
+			case "execute":
+			case "run":
+			case "eval":
+				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_EXEC)
+					&& ($item = $this->checkItem($sender))
+					&& $this->testPermission($sender, ExecutableBook::getPermission($item)->getName())
+				) ExecutableBook::execute($item, $sender);
+				return true;
+
+			case "perm":
+			case "permission":
+				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
+					if(ExecutableBook::getPermission($permission = strtolower($args[1])) === null){
+						$sender->sendMessage("Permission \"$permission\" does not exist.");
+						return true;
 					}
-					return true;
-			}
+					if(!($item = $this->checkItem($sender))){
+						return true;
+					}
+					/** @var Player $sender */
+					$sender->getInventory()->setItemInHand($item->setLore([$permission]));
+					Command::broadcastCommandMessage($sender, "Execute permissions have been successfully changed to $permission.");
+				}
+				return true;
 		}
 
 		throw new InvalidCommandSyntaxException();
