@@ -18,7 +18,7 @@ final class EvalBook extends ExecutableBook{
 
 	protected static function equalsInternal(Item $item) : bool{
 		return VanillaItems::WRITABLE_BOOK()->equals($item, true, false)
-			&& $item->getCustomName() === "EvalBook"
+			&& $item->hasCustomName()
 			&& $item->hasEnchantment(VanillaEnchantments::POWER());
 	}
 
