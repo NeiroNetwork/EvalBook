@@ -14,6 +14,7 @@
 | `/evalbook exec` | EvalBookを実行します | `execute` `run` `eval` |
 | `/evalbook perm <default/op/everyone>` | EvalBookの実行権限を変更します | `permission` |
 | `/evalbook reload` | 設定ファイルを再読み込みします |  |
+| `/evalbook customname` | EvalBookのアイテムの名前を変更します | `name` |
 
 ## 権限
 | 権限 | 本の表示 | 説明 |
