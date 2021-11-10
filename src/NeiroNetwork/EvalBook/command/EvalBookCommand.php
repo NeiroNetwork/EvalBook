@@ -85,7 +85,7 @@ class EvalBookCommand extends Command{
 					}
 					/** @var Player $sender */
 					$sender->getInventory()->setItemInHand($item->setLore([$permission]));
-					Command::broadcastCommandMessage($sender, "Execute permissions have been successfully changed to $permission.");
+					Command::broadcastCommandMessage($sender, "Execute permission has been successfully changed to $permission.");
 				}
 				return true;
 
