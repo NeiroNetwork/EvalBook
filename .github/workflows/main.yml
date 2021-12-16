@@ -19,7 +19,7 @@ jobs:
       run: |
         ID=`curl -s 'https://dev.azure.com/pocketmine/PHP-Builds/_apis/build/builds?definitions=3&resultFilter=succeeded&$top=1&branchName=refs/heads/master&api-version=5.0' | jq '.value | .[0].id'`
         curl -JLOs "https://dev.azure.com/pocketmine/PHP-Builds/_apis/build/builds/$ID/artifacts?artifactName=Linux&api-version=6.0&%24format=zip" &
-        curl -JLOs "https://raw.githubusercontent.com/pmmp/DevTools/master/src/DevTools/ConsoleScript.php" &
+        curl -JLOs "https://raw.githubusercontent.com/pmmp/DevTools/master/src/ConsoleScript.php" &
         wait
 
     - name: Prepare php binary
