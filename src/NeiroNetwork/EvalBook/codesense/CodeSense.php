@@ -12,7 +12,7 @@ class CodeSense{
 		$importString = "";
 		foreach(Imports::get() as $class){
 			if(!str_contains($code, $class)){
-				$importString .= "use {$class};";
+				$importString .= "use $class;";
 			}
 		}
 		return $importString . $code;
