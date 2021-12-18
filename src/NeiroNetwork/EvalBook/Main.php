@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use NeiroNetwork\EvalBook\codesense\Imports;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\plugin\PluginBase;
