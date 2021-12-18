@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\codesense;
 
-use NeiroNetwork\EvalBook\Main;
 use pocketmine\utils\SingletonTrait;
 
 class Imports{
@@ -27,11 +26,7 @@ class Imports{
 			}
 		}
 
-		foreach($classes as $className => $classList){
-			if(count($classList) > 1){
-				Main::getInstance()->getLogger()->debug("found " . count($classList) . " classes with '$className'");
-				array_map(fn(string $class) => Main::getInstance()->getLogger()->debug("    $class"), $classList);
-			}
+		foreach($classes as $classList){
 			$this->importClasses[] = reset($classList);
 		}
 	}
