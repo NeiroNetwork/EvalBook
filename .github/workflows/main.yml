@@ -2,8 +2,7 @@ name: build
 
 on:
   push:
-    tags:
-      - '*'
+    tags: '*'
 
 jobs:
   build:
@@ -12,32 +11,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        path: plugin
-
-    - name: Download pmmp files
-      run: |
-        ID=`curl -s 'https://dev.azure.com/pocketmine/PHP-Builds/_apis/build/builds?definitions=3&resultFilter=succeeded&$top=1&branchName=refs/heads/master&api-version=5.0' | jq '.value | .[0].id'`
-        curl -JLOs "https://dev.azure.com/pocketmine/PHP-Builds/_apis/build/builds/$ID/artifacts?artifactName=Linux&api-version=6.0&%24format=zip" &
-        curl -JLOs "https://raw.githubusercontent.com/pmmp/DevTools/master/src/ConsoleScript.php" &
-        wait
-
-    - name: Prepare php binary
-      run: |
-        echo "$(pwd)/bin/php7/bin" >> $GITHUB_PATH
-        unzip -q Linux.zip && tar -xzf Linux/PHP_Linux-x86_64.tar.gz
-        EXTENSION_DIR=$(find "$(pwd)/bin" -name *debug-zts*)
-        echo "extension_dir=\"$EXTENSION_DIR\"" >> bin/php7/bin/php.ini
-        sed -i "s/date.timezone=.*/date.timezone=Asia\\/Tokyo/" bin/php7/bin/php.ini
 
     - name: Build plugin
       run: |
-        php -dphar.readonly=0 ConsoleScript.php --make plugin --out ${{ github.event.repository.name }}.phar
+        curl -sLo .php https://raw.githubusercontent.com/pmmp/DevTools/master/src/ConsoleScript.php
+        php -dphar.readonly=0 .php --make ./ --out ${{ github.event.repository.name }}.phar
 
-    - name: Create github release
-      uses: softprops/action-gh-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: softprops/action-gh-release@v0.1.14
       with:
-        files: |
-          ${{ github.event.repository.name }}.phar
+        files: ${{ github.event.repository.name }}.phar
