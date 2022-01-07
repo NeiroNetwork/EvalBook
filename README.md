@@ -38,7 +38,7 @@
 ```php
 $listener = new class() implements Listener{
     function onJump(PlayerJumpEvent $event){
-        $event->getPlayer()->sendTip("Jump!");
+        $event->getPlayer()->sendTip("ジャンプしたよ");
     }
 };
 
