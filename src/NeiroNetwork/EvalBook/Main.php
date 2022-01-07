@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use NeiroNetwork\EvalBook\codesense\Imports;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\plugin\PluginBase;
@@ -29,6 +30,10 @@ class Main extends PluginBase{
 
 	public function getOperators() : Config{
 		return $this->operators;
+	}
+
+	protected function onLoad() : void{
+		Imports::getInstance();
 	}
 
 	protected function onEnable() : void{
