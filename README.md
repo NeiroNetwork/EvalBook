@@ -34,6 +34,7 @@
 - クラスや関数に記述されたコードのエラーはキャッチしていません。~~(出来ない？)~~
   - イベントリスナーなどでエラーが出た場合はサーバーが終了します。
 
+### 良い書き方
 ```php
 $listener = new class() implements Listener{
     function onJump(PlayerJumpEvent $event){
@@ -42,4 +43,18 @@ $listener = new class() implements Listener{
 };
 
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
+```
+
+### 悪い書き方
+```php
+// クラスを直接定義している、2回実行するとサーバーが落ちる
+class MyEventListener implements Listener{
+    function onChat(PlayerChatEvent $event){
+        // 例外が発生するかもしれないコードをtry-catchで囲んでいない (例が悪い)
+        $player = $this->getServer()->getPlayerByPrefix($event->getChat());
+        $player->sendMessage("呼ばれたよ！");
+    }
+}
+
+$this->getServer()->getPluginManager()->registerEvents(new MyEventListener(), $this);
 ```
