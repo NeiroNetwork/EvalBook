@@ -40,7 +40,7 @@ class EvalBookCommand extends Command{
 			return true;
 		}
 
-		switch(strtolower(array_shift($args))){
+		switch(strtolower(array_shift($args) ?? "")){
 			case "reload":
 				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_RELOAD)){
 					$operators = Main::getInstance()->getOperators();
