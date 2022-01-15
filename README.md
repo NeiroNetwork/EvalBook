@@ -36,6 +36,12 @@
 
 ### コードの書き方の例
 ```php
+/**
+ * 以下の変数はコードを実行したプレイヤーが代入されています
+ * $_player, $_PLAYER, $_player_, $_PLAYER_
+ * $_executor, $_EXECUTOR, $_executor_, $_EXECUTOR_
+ * $_executer, $_EXECUTER, $_executer_, $_EXECUTER_
+ */
 // コードを実行したプレイヤーにメッセージを送信します
 $_player->sendMessage("本を実行しました");
 ```
