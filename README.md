@@ -34,7 +34,13 @@
 - クラスや関数に記述されたコードのエラーはキャッチしていません。~~(出来ない？)~~
   - イベントリスナーなどでエラーが出た場合はサーバーが終了します。
 
-### 良い書き方
+### コードの書き方の例
+```php
+// コードを実行したプレイヤーにメッセージを送信します
+$_player->sendMessage("本を実行しました");
+```
+
+#### 良い書き方の例
 ```php
 $listener = new class() implements Listener{
     function onJump(PlayerJumpEvent $event){
@@ -45,7 +51,7 @@ $listener = new class() implements Listener{
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 ```
 
-### 悪い書き方
+### 悪い書き方の例
 ```php
 // クラスを直接定義している、2回実行するとサーバーが落ちる
 class MyEventListener implements Listener{
