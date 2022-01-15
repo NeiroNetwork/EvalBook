@@ -56,6 +56,7 @@ class EvalBookCommand extends Command{
 				return true;
 
 			case "new":
+			case "get":
 				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_NEW)){
 					if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($item = EvalBook::new())){
 						$sender->getInventory()->addItem($item);

@@ -10,7 +10,7 @@
 
 | コマンド | 説明 | エイリアス |
 | --- | --- | --- |
-| `/evalbook new` | EvalBookを手に入れます |  |
+| `/evalbook new` | EvalBookを手に入れます | `get` |
 | `/evalbook exec` | EvalBookを実行します | `execute` `run` `eval` |
 | `/evalbook perm <default/op/everyone>` | EvalBookの実行権限を変更します | `permission` |
 | `/evalbook reload` | 設定ファイルを再読み込みします |  |
