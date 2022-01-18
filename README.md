@@ -57,7 +57,7 @@ $listener = new class() implements Listener{
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 ```
 
-### 悪い書き方の例
+#### 悪い書き方の例
 ```php
 // クラスを直接定義している、2回実行するとサーバーが落ちる
 class MyEventListener implements Listener{
@@ -69,4 +69,26 @@ class MyEventListener implements Listener{
 }
 
 $this->getServer()->getPluginManager()->registerEvents(new MyEventListener(), $this);
+```
+
+#### useを使わなければいけないコード
+```php
+use pocketmine\block\Bed;       // エラー！！！
+use pocketmine\block\tile\Bed;  // エラー！！！
+use pocketmine\item\Bed;        // エラー！！！
+
+// この書き方はOK
+use pocketmine\block\Bed as BlockBed;
+use pocketmine\block\tile\Bed as TileBed;
+use pocketmine\item\Bed as ItemBed;
+
+if($_player->getWorld()->getBlock($_player->getPosition()) instanceof BlockBed){
+    $_player->sendMessage("足元にベッド(ブロック)があるよ！");
+}
+if($_player->getWorld()->getTile($_player->getPosition()) instanceof TileBed){
+    $_player->sendMessage("足元にベッド(タイル)があるよ！");
+}
+if($_player->getInventory()->getItemInHand() instanceof ItemBed){
+    $_player->sendMessage("ベッド(アイテム)を手に持っているよ！");
+}
 ```
