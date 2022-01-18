@@ -37,8 +37,10 @@ abstract class ExecutableBook{
 		try{
 			Main::getInstance()->eval($sense);
 		}catch(\Throwable $exception){
-			// fatal error はどうあがいてもキャッチできない
-			// 例えばクラスの間違った継承やクラス/関数の重複した登録
+			/**
+			 * fatal error はどうあがいてもキャッチできない
+			 * 例えば: クラスの間違った継承、クラスや関数を2回以上定義する
+			 */
 			$executor?->sendMessage(TextFormat::RED . ExceptionUtils::toString($exception));
 			return false;
 		}
