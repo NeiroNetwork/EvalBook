@@ -17,13 +17,8 @@ use pocketmine\utils\TextFormat;
 
 abstract class ExecutableBook{
 
-	public static function equals(Item $item) : bool{
-		return (EvalBook::equalsInternal($item) || CodeBook::equalsInternal($item)) && ExecutableBook::equalsInternal($item);
-	}
-
-	protected static function equalsInternal(Item $item) : bool{
-		return isset(($lore = $item->getLore())[0])
-			&& ($lore[0] === "default" || $lore[0] === "op" || $lore[0] === "everyone");
+	public static function isExcutableBook(Item $item) : bool{
+		return $item->getNamedTag()->getByte("EvalBook", 0) === 1;
 	}
 
 	public static function getPermission(WritableBookBase|string $bookOrPerm) : ?Permission{

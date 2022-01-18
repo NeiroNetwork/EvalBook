@@ -25,7 +25,7 @@ class EventListener implements Listener{
 	}
 
 	public function onEditBook(PlayerEditBookEvent $event) : void{
-		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK && EvalBook::equals($event->getOldBook())){
+		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK && ExecutableBook::isExcutableBook($event->getOldBook())){
 			/** @noinspection PhpParamsInspection */
 			$event->setNewBook(CodeBook::create($event->getOldBook(), $event->getNewBook(), $event->getPlayer()));
 		}
@@ -33,7 +33,7 @@ class EventListener implements Listener{
 
 	public function onDropItem(PlayerDropItemEvent $event) : void{
 		if(($player = $event->getPlayer())->isSneaking()
-			&& ExecutableBook::equals($item = $event->getItem())
+			&& ExecutableBook::isExcutableBook($item = $event->getItem())
 			&& $player->hasPermission(ExecutableBook::getPermission($item))
 		){
 			$event->cancel();

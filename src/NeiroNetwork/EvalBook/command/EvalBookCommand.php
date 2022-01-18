@@ -108,7 +108,7 @@ class EvalBookCommand extends Command{
 	}
 
 	private function checkItem(CommandSender $sender) : ?WritableBookBase{
-		if(!$sender instanceof Human || !ExecutableBook::equals($item = $sender->getInventory()->getItemInHand())){
+		if(!$sender instanceof Human || !ExecutableBook::isExcutableBook($item = $sender->getInventory()->getItemInHand())){
 			$sender->sendMessage("Couldn't find executable book.");
 			return null;
 		}
