@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook;
 
 use NeiroNetwork\EvalBook\item\WrittenExecutableBook;
-use NeiroNetwork\EvalBook\item\WritableExecutableBook;
 use NeiroNetwork\EvalBook\item\ExecutableBook;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerEditBookEvent;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\item\WritableBook;
 use pocketmine\item\WritableBookBase;
+use pocketmine\item\WrittenBook;
 use pocketmine\network\mcpe\protocol\BookEditPacket;
 
 class EventListener implements Listener{
@@ -26,8 +27,11 @@ class EventListener implements Listener{
 
 	public function onEditBook(PlayerEditBookEvent $event) : void{
 		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK && ExecutableBook::isExcutableBook($event->getOldBook())){
-			/** @noinspection PhpParamsInspection */
-			$event->setNewBook(WrittenExecutableBook::create($event->getOldBook(), $event->getNewBook(), $event->getPlayer()));
+			$oldBook = $event->getOldBook();
+			assert($oldBook instanceof WritableBook);
+			$newBook = $event->getNewBook();
+			assert($newBook instanceof WrittenBook);
+			$event->setNewBook(WrittenExecutableBook::create($oldBook, $newBook, $event->getPlayer()));
 		}
 	}
 
