@@ -22,8 +22,8 @@ class CodeSense{
 		$list = [];
 		foreach(["player", "executor", "executer"] as $str){
 			$STR = strtoupper($str);
-			array_push($list, "\$_{$str}", "\$_{$str}_", "\$_{$STR}", "\$_{$STR}_");
+			array_push($list, "\$_$str", "\$_{$str}_", "\$_$STR", "\$_{$STR}_");
 		}
-		return implode("=", $list) . " = \pocketmine\Server::getInstance()->getPlayerExact('{$sender->getName()}');{$code}";
+		return implode("=", $list) . " = \pocketmine\Server::getInstance()->getPlayerExact('{$sender->getName()}');$code";
 	}
 }
