@@ -8,7 +8,7 @@ use pocketmine\item\WritableBook;
 use pocketmine\item\WrittenBook;
 use pocketmine\player\Player;
 
-final class CodeBook extends ExecutableBook{
+final class WrittenExecutableBook extends ExecutableBook{
 
 	public static function create(WritableBook $before, WrittenBook $after, Player $author = null) : WrittenBook{
 		if($author !== null){

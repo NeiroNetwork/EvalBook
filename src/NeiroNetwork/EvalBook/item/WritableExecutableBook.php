@@ -9,7 +9,7 @@ use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\VanillaItems;
 use pocketmine\item\WritableBook;
 
-final class EvalBook extends ExecutableBook{
+final class WritableExecutableBook extends ExecutableBook{
 
 	public static function new() : WritableBook{
 		$item = VanillaItems::WRITABLE_BOOK()

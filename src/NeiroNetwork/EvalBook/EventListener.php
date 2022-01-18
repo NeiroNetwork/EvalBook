@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
-use NeiroNetwork\EvalBook\item\CodeBook;
-use NeiroNetwork\EvalBook\item\EvalBook;
+use NeiroNetwork\EvalBook\item\WrittenExecutableBook;
+use NeiroNetwork\EvalBook\item\WritableExecutableBook;
 use NeiroNetwork\EvalBook\item\ExecutableBook;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\event\Listener;
@@ -27,7 +27,7 @@ class EventListener implements Listener{
 	public function onEditBook(PlayerEditBookEvent $event) : void{
 		if($event->getAction() === BookEditPacket::TYPE_SIGN_BOOK && ExecutableBook::isExcutableBook($event->getOldBook())){
 			/** @noinspection PhpParamsInspection */
-			$event->setNewBook(CodeBook::create($event->getOldBook(), $event->getNewBook(), $event->getPlayer()));
+			$event->setNewBook(WrittenExecutableBook::create($event->getOldBook(), $event->getNewBook(), $event->getPlayer()));
 		}
 	}
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\command;
 
-use NeiroNetwork\EvalBook\item\EvalBook;
+use NeiroNetwork\EvalBook\item\WritableExecutableBook;
 use NeiroNetwork\EvalBook\item\ExecutableBook;
 use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
@@ -57,7 +57,7 @@ class EvalBookCommand extends Command{
 			case "new":
 			case "get":
 				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_NEW)){
-					if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($item = EvalBook::new())){
+					if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($item = WritableExecutableBook::new())){
 						$sender->getInventory()->addItem($item);
 					}
 				}
