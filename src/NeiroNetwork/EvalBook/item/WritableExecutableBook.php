@@ -14,7 +14,7 @@ final class WritableExecutableBook extends ExecutableBook{
 	public static function new() : WritableBook{
 		$item = VanillaItems::WRITABLE_BOOK()
 			->setCustomName("EvalBook")
-			->addEnchantment(new EnchantmentInstance(VanillaEnchantments::POWER(), 0))
+			->addEnchantment(new EnchantmentInstance(VanillaEnchantments::POWER(), 10))
 			->setLore(["default"]);
 		$item->getNamedTag()->setByte("EvalBook", 1);
 		return $item;
