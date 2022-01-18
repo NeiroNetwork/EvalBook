@@ -72,12 +72,15 @@ $this->getServer()->getPluginManager()->registerEvents(new MyEventListener(), $t
 ```
 
 #### useを使わなければいけないコード
+##### エラーになるコード
 ```php
 use pocketmine\block\Bed;       // エラー！！！
 use pocketmine\block\tile\Bed;  // エラー！！！
 use pocketmine\item\Bed;        // エラー！！！
+```
 
-// この書き方はOK
+##### この書き方はOK
+```php
 use pocketmine\block\Bed as BlockBed;
 use pocketmine\block\tile\Bed as TileBed;
 use pocketmine\item\Bed as ItemBed;
@@ -90,5 +93,12 @@ if($_player->getWorld()->getTile($_player->getPosition()) instanceof TileBed){
 }
 if($_player->getInventory()->getItemInHand() instanceof ItemBed){
     $_player->sendMessage("ベッド(アイテム)を手に持っているよ！");
+}
+```
+
+##### `use ~ as ~;` の回避策
+```php
+if($_player->getInventory()->getItemInHand() instanceof \pocketmine\item\Bamboo){
+    $_player->sendMessage("竹を手に持っているよ！");
 }
 ```
