@@ -7,7 +7,7 @@ namespace NeiroNetwork\EvalBook\utils;
 use pocketmine\errorhandler\ErrorTypeToStringMap;
 use pocketmine\utils\MainLogger;
 
-final class Exception{
+final class ExceptionUtils{
 
 	/**
 	 * @see MainLogger::printExceptionMessage()

@@ -7,7 +7,7 @@ namespace NeiroNetwork\EvalBook\item;
 use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
-use NeiroNetwork\EvalBook\utils\Exception;
+use NeiroNetwork\EvalBook\utils\ExceptionUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
 use pocketmine\item\WritableBookBase;
@@ -39,7 +39,7 @@ abstract class ExecutableBook{
 		}catch(\Throwable $exception){
 			// fatal error はどうあがいてもキャッチできない
 			// 例えばクラスの間違った継承やクラス/関数の重複した登録
-			$executor?->sendMessage(TextFormat::RED . Exception::toString($exception));
+			$executor?->sendMessage(TextFormat::RED . ExceptionUtils::toString($exception));
 			return false;
 		}
 		return true;
