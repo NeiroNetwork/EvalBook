@@ -35,7 +35,7 @@ abstract class ExecutableBook{
 			$sense = CodeSense::injectBookExecutedPlayer($sense, $executor);
 		}
 		try{
-			Main::eval($sense);
+			Main::getInstance()->eval($sense);
 		}catch(\Throwable $exception){
 			// fatal error はどうあがいてもキャッチできない
 			// 例えばクラスの間違った継承やクラス/関数の重複した登録
