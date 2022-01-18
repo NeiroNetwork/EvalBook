@@ -16,7 +16,6 @@ use pocketmine\entity\Human;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\WritableBookBase;
 use pocketmine\player\Player;
-use pocketmine\Server;
 
 class EvalBookCommand extends Command{
 
@@ -45,11 +44,11 @@ class EvalBookCommand extends Command{
 				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_RELOAD)){
 					$operators = Main::getInstance()->getOperators();
 					foreach($operators->getAll(true) as $name){
-						Server::getInstance()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, false);
+						$sender->getServer()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, false);
 					}
 					$operators->reload();
 					foreach($operators->getAll(true) as $name){
-						Server::getInstance()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
+						$sender->getServer()->getPlayerExact($name)?->setBasePermission(EvalBookPermissions::ROOT_OPERATOR, true);
 					}
 					Command::broadcastCommandMessage($sender, "Configuration file has been reloaded.");
 				}
