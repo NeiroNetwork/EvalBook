@@ -34,7 +34,7 @@
 - クラスや関数に記述されたコードのエラーはキャッチしていません。~~(出来ない？)~~
   - イベントリスナーなどでエラーが出た場合はサーバーが終了します。
 
-### コードの書き方の例
+## コードの書き方の例
 ```php
 /**
  * 以下の変数はコードを実行したプレイヤーが代入されています
@@ -46,7 +46,7 @@
 $_player->sendMessage("本を実行しました");
 ```
 
-#### 良い書き方の例
+### 良い書き方の例
 ```php
 $listener = new class() implements Listener{
     function onJump(PlayerJumpEvent $event){
@@ -57,7 +57,7 @@ $listener = new class() implements Listener{
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 ```
 
-#### 悪い書き方の例
+### 悪い書き方の例
 ```php
 // クラスを直接定義している、2回実行するとサーバーが落ちる
 class MyEventListener implements Listener{
@@ -71,15 +71,15 @@ class MyEventListener implements Listener{
 $this->getServer()->getPluginManager()->registerEvents(new MyEventListener(), $this);
 ```
 
-#### useを使わなければいけないコード
-##### エラーになるコード
+### useを使わなければいけないコード
+#### エラーになるコード
 ```php
 use pocketmine\block\Bed;       // エラー！！！
 use pocketmine\block\tile\Bed;  // エラー！！！
 use pocketmine\item\Bed;        // エラー！！！
 ```
 
-##### この書き方はOK
+#### この書き方はOK
 ```php
 use pocketmine\block\Bed as BlockBed;
 use pocketmine\block\tile\Bed as TileBed;
@@ -96,7 +96,7 @@ if($_player->getInventory()->getItemInHand() instanceof ItemBed){
 }
 ```
 
-##### `use ~ as ~;` の回避策
+#### `use ~ as ~;` の回避策
 ```php
 if($_player->getInventory()->getItemInHand() instanceof \pocketmine\item\Bamboo){
     $_player->sendMessage("竹を手に持っているよ！");
