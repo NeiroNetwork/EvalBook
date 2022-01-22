@@ -76,7 +76,7 @@ class EvalBookCommand extends Command{
 			case "perm":
 			case "permission":
 				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
-					if(ExecutableBook::getPermission($permission = strtolower($args[1] ?? "")) === null){
+					if(ExecutableBook::getPermission($permission = strtolower(array_shift($args) ?? "")) === null){
 						$sender->sendMessage("Permission \"$permission\" does not exist.");
 						return true;
 					}
