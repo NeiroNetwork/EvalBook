@@ -92,7 +92,7 @@ class EvalBookCommand extends Command{
 			case "customname":
 			case "name":
 				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_CUSTOM_NAME) && ($item = $this->checkItem($sender))){
-					if(empty(trim($customName = implode(" ", $args)))){
+					if(empty($customName = trim(implode(" ", $args)))){
 						$sender->sendMessage("Custom name must not be empty.");
 						return true;
 					}
