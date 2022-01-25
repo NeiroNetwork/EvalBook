@@ -33,6 +33,10 @@ final class CrashTracer{
 
 	public static function catchLastError() : void{
 		global $lastExceptionError;
+		if(empty($lastExceptionError)){
+			// 恐らく fatal error が発生
+			return;
+		}
 		if(str_contains($lastExceptionError["file"], "EvalBook/Main") && str_contains($lastExceptionError["file"], "eval()'d code")){
 			$error = "{$lastExceptionError["type"]}: \"{$lastExceptionError["message"]}\" at line {$lastExceptionError["line"]}";
 			$path = Path::join(Main::getInstance()->getDataFolder(), "lasterror.txt");
