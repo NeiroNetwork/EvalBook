@@ -1,5 +1,5 @@
 name: EvalBook
-version: 0.0.13
+version: 0.0.14
 main: NeiroNetwork\EvalBook\Main
 api: 4.0.0
 load: STARTUP
