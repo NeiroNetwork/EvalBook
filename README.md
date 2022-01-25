@@ -63,6 +63,7 @@ $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 class MyEventListener implements Listener{
     function onChat(PlayerChatEvent $event){
         // 例外が発生するかもしれないコードをtry-catchで囲んでいない (例が悪い)
+        // (class内のコードは例外がキャッチされず、サーバーがクラッシュする)
         $player = $this->getServer()->getPlayerByPrefix($event->getChat());
         $player->sendMessage("呼ばれたよ！");
     }
