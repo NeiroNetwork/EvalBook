@@ -35,11 +35,10 @@ class Main extends PluginBase{
 
 	protected function onEnable() : void{
 		self::$instance = $this;
+		EvalBookPermissions::registerPermissions();
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
-
-		EvalBookPermissions::registerPermissions();
 
 		CrashTracer::tryReadLastError();
 	}
