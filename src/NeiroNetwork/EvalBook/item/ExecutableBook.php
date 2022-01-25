@@ -17,7 +17,7 @@ use pocketmine\utils\TextFormat;
 
 abstract class ExecutableBook{
 
-	public static function isExcutableBook(Item $item) : bool{
+	public static function isExecutableBook(Item $item) : bool{
 		return $item->getNamedTag()->getByte("EvalBook", 0) === 1;
 	}
 
