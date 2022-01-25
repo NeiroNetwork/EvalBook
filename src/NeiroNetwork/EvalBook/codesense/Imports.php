@@ -30,16 +30,17 @@ class Imports{
 					continue;
 				}
 				$namespace = substr($matches[0], 10, -1);
-				// 「class ～」が含まれるか検索
-				if(preg_match_all("/class .+/", $fileContents, $matches) == 0){	// 0 or false
-					continue;
-				}
-				foreach($matches[0] as $classString){
+
+				preg_match_all("/class .+/", $fileContents, $matches0);
+				preg_match_all("/interface .+/", $fileContents, $matches1);
+				preg_match_all("/trait .+/", $fileContents, $matches2);
+
+				foreach(array_merge($matches0[0], $matches1[0], $matches2[0]) as $classString){
 					// クラス名に使われなさそうな文字列が含まれていない
 					if(preg_match("/[^0-9a-zA-Z_ \\\{},]/", $classString) === 0){
-						preg_match("/class [0-9a-zA-Z_]+/", $classString, $matches2);
 						try{
-							new \ReflectionClass("$namespace\\" . substr($matches2[0], 6));
+							preg_match("/[0-9a-zA-Z_]+/", explode(" ", $classString)[1], $matches3);
+							new \ReflectionClass("$namespace\\" . $matches3[0]);
 						}catch(\ReflectionException){
 						}
 					}
