@@ -7,6 +7,7 @@ namespace NeiroNetwork\EvalBook;
 use NeiroNetwork\EvalBook\codesense\Imports;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
+use NeiroNetwork\EvalBook\utils\CrashTracer;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use Webmozart\PathUtil\Path;
@@ -41,5 +42,11 @@ class Main extends PluginBase{
 		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);
 
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
+
+		CrashTracer::tryReadLastError();
+	}
+
+	protected function onDisable() : void{
+		CrashTracer::catchLastError();
 	}
 }

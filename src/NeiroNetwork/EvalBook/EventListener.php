@@ -7,14 +7,19 @@ namespace NeiroNetwork\EvalBook;
 use NeiroNetwork\EvalBook\item\WrittenExecutableBook;
 use NeiroNetwork\EvalBook\item\ExecutableBook;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
+use NeiroNetwork\EvalBook\utils\CrashTracer;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerEditBookEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\item\WritableBook;
 use pocketmine\item\WritableBookBase;
 use pocketmine\item\WrittenBook;
 use pocketmine\network\mcpe\protocol\BookEditPacket;
+use pocketmine\player\Player;
+use pocketmine\scheduler\CancelTaskException;
+use pocketmine\scheduler\Task;
 
 class EventListener implements Listener{
 
@@ -44,5 +49,17 @@ class EventListener implements Listener{
 			/** @var WritableBookBase $item */
 			ExecutableBook::execute($item, $player);
 		}
+	}
+
+	public function onJoin(PlayerJoinEvent $event) : void{
+		Main::getInstance()->getScheduler()->scheduleDelayedTask(new class($event->getPlayer()) extends Task{
+			public function __construct(private Player $player){}
+
+			public function onRun() : void{
+				if($this->player->isOnline()){
+					CrashTracer::notifyTo($this->player);
+				}
+			}
+		}, 20);
 	}
 }
