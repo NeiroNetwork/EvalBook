@@ -50,6 +50,7 @@ class Imports{
 		$classes = [];
 
 		$allClasses = array_merge(get_declared_classes(), get_declared_interfaces(), get_declared_traits());
+		/** @var string $class */
 		foreach($allClasses as $class){
 			$reflection = new \ReflectionClass($class);
 			if($reflection->inNamespace() && !$reflection->isAnonymous()){
