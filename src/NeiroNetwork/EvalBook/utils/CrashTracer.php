@@ -37,7 +37,17 @@ final class CrashTracer{
 			// 恐らく fatal error が発生
 			return;
 		}
-		if(str_contains($lastExceptionError["file"], "EvalBook/Main") && str_contains($lastExceptionError["file"], "eval()'d code")){
+
+		$contains = fn(string $file) : bool => str_contains($file, "EvalBook") && str_contains($file, "eval()'d code");
+		if(!($isPluginError = $contains($lastExceptionError["fullFile"]))){
+			foreach($lastExceptionError["trace"] as $trace){
+				if($isPluginError = $contains($trace["file"])){
+					break;
+				}
+			}
+		}
+
+		if($isPluginError){
 			$error = "{$lastExceptionError["type"]}: \"{$lastExceptionError["message"]}\" at line {$lastExceptionError["line"]}";
 			$path = Path::join(Main::getInstance()->getDataFolder(), "lasterror.txt");
 			file_put_contents($path, $error);
