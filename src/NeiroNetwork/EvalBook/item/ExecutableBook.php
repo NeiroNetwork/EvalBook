@@ -50,7 +50,7 @@ abstract class ExecutableBook{
 	public static function parseBookCode(WritableBookBase $book) : string{
 		$stack = [];
 		foreach($book->getPages() as $page){
-			if(!empty($text = trim($page->getText()))){
+			if(($text = trim($page->getText())) !== ""){
 				$stack[] = $text;
 			}
 		}
