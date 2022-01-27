@@ -48,7 +48,7 @@ final class CrashTracer{
 		}
 
 		if($isPluginError){
-			$error = "{$lastExceptionError["type"]}: \"{$lastExceptionError["message"]}\" at line {$lastExceptionError["line"]}";
+			$error = "{$lastExceptionError["type"]}: \"{$lastExceptionError["message"]}\" in \"{$lastExceptionError["file"]}\" at line {$lastExceptionError["line"]}";
 			$path = Path::join(Main::getInstance()->getDataFolder(), "lasterror.txt");
 			file_put_contents($path, $error);
 		}
