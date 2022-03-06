@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\item;
 
+use NeiroNetwork\EvalBook\codesense\Addon;
 use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\Main;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
@@ -30,7 +31,15 @@ abstract class ExecutableBook{
 
 	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
 		var_dump($code = self::parseBookCode($book));
-		$sense = CodeSense::injectImport($code);
+
+		# Addon
+		$addons = Addon::detectAddons($code);
+		foreach($addons as $addon){
+			$sense = CodeSense::injectAddon($code, $addon);
+		}
+
+
+		$sense = CodeSense::injectImport($sense);
 		if($executor !== null){
 			$sense = CodeSense::injectBookExecutedPlayer($sense, $executor);
 		}
@@ -54,6 +63,7 @@ abstract class ExecutableBook{
 				$stack[] = $text;
 			}
 		}
+
 		return implode(PHP_EOL, $stack);
 	}
 }
