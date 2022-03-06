@@ -18,6 +18,13 @@ class CodeSense{
 		return $importString . $code;
 	}
 
+	public static function injectAddon(string $code, Addon $addon) : string{
+		$use = "use " . $addon::class;
+		$code = $use . $code;
+		$addon->onInject($code);
+		return $code;
+	}
+
 	public static function injectBookExecutedPlayer(string $code, CommandSender $sender) : string{
 		$list = [];
 		foreach(["player", "executor", "executer"] as $str){
