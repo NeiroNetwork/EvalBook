@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\codesense;
 
 use pocketmine\command\CommandSender;
+use Reflection;
+use ReflectionClass;
 
 class CodeSense{
 
@@ -18,10 +20,14 @@ class CodeSense{
 		return $importString . $code;
 	}
 
-	public static function injectAddon(string $code, Addon $addon) : string{
+	public static function injectAddon(string $code, Addon $addon, ?CommandSender $executor = null) : string{
 		$use = "use " . $addon::class;
-		$code = $use . $code;
-		$addon->onInject($code);
+		$shortName = (new ReflectionClass($addon))->getShortName();
+		if ($shortName !== $addon->getName()){
+			$use .= " as " . $addon->getName();
+		}
+		$code = $use . ";" . $code;
+		$addon->onInject($code, $executor);
 		return $code;
 	}
 
