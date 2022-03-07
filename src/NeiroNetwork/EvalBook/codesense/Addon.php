@@ -26,12 +26,15 @@ abstract class Addon {
 	public static function parseAddons(string &$code): array{
 		$ns = self::ALLOWED_NAMESPACE;
 		preg_match("/import {$ns}+;/", $code, $matches);
-		$code = preg_replace("/import {$ns}+;/", "", $code);
+		
 		$addons = [];
 		foreach($matches as $match){
 			$name = substr($match, 7);
 			$name = substr($name, 0, -1);
 			$found = self::searchAddon($name);
+			if (count($found) > 0){
+				$code = preg_replace("/import {$name};/", "", $code);
+			}
 			$addons = array_merge($addons, $found);
 		}
 
