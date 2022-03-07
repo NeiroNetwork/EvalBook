@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use NeiroNetwork\EvalBook\addons\HelloWorldAddon;
+use NeiroNetwork\EvalBook\addons\SampleAddon;
+use NeiroNetwork\EvalBook\codesense\Addon;
 use NeiroNetwork\EvalBook\codesense\Imports;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
@@ -39,6 +42,8 @@ class Main extends PluginBase{
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
+
+		Addon::registerAddon(new HelloWorldAddon);
 
 		CrashTracer::tryReadLastError();
 	}
