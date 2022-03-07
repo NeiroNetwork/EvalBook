@@ -14,6 +14,7 @@ use pocketmine\item\Item;
 use pocketmine\item\WritableBookBase;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 abstract class ExecutableBook{
@@ -32,16 +33,18 @@ abstract class ExecutableBook{
 	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
 		var_dump($code = self::parseBookCode($book));
 
-		# Addon
-		$addons = Addon::detectAddons($code);
-		foreach($addons as $addon){
-			$sense = CodeSense::injectAddon($code, $addon);
-		}
 
 
-		$sense = CodeSense::injectImport($sense);
+		$sense = CodeSense::injectImport($code);
 		if($executor !== null){
 			$sense = CodeSense::injectBookExecutedPlayer($sense, $executor);
+		}
+
+		#Addon
+		$addons = Addon::parseAddons($sense);
+		foreach($addons as $addon){
+			Server::getInstance()->getLogger()->debug("Injecting Addon To {$book->getCustomName()}: {$addon->getName()}");
+			$sense = CodeSense::injectAddon($sense, $addon, $executor);
 		}
 		try{
 			Main::getInstance()->eval($sense);
