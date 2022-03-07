@@ -30,7 +30,6 @@ abstract class Addon {
 		$addons = [];
 		foreach($matchesAll as $matches){
 			foreach($matches as $match){
-				print_r("Matched: {$match}\n");
 				$name = substr($match, 7);
 				$name = substr($name, 0, -1);
 				$found = self::searchAddon($name);
