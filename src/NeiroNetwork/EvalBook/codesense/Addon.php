@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\codesense;
 
+use pocketmine\command\CommandSender;
+
 abstract class Addon {
+
+	const ALLOWED_NAMESPACE = "[a-zA-z]";
 
 	private static array $list = [];
 
-	protected string $name;
+	private string $name;
 
 	public static function registerAddon(Addon $addon): void{
 		self::$list[$addon::class] = $addon;
@@ -19,16 +23,16 @@ abstract class Addon {
 	 * 
 	 * @return Addon[]
 	 */
-	public static function detectAddons(string $code): array{
-		preg_match("/^import [a-zA-z]+;/", $code, $matches);
+	public static function parseAddons(string &$code): array{
+		$ns = self::ALLOWED_NAMESPACE;
+		preg_match("/import {$ns}+;/", $code, $matches);
+		$code = preg_replace("/import {$ns}+;/", "", $code);
 		$addons = [];
 		foreach($matches as $match){
-			$class = substr($match, 5);
-			$class = substr($class, -1);
-			$addon = self::$list[$class] ?? null;
-			if ($addon instanceof Addon){
-				$addons[] = $addon;
-			}
+			$name = substr($match, 7);
+			$name = substr($name, 0, -1);
+			$found = self::searchAddon($name);
+			$addons = array_merge($addons, $found);
 		}
 
 		return $addons;
@@ -44,13 +48,13 @@ abstract class Addon {
 	/**
 	 * @param string $name
 	 * 
-	 * @return string[]
+	 * @return Addon[]
 	 */
 	public static function searchAddon(string $name): array{
 		$found = [];
 		foreach(self::$list as $class => $addon){
 			if ($name == $addon->getName()){
-				$found[] = $class;
+				$found[] = $addon;
 			}
 		}
 
@@ -61,9 +65,17 @@ abstract class Addon {
 		$this->name = (new \ReflectionClass($this))->getShortName();
 	}
 
-	protected function getName(): string{
+	protected function setName(string $name): void{
+		$ns = self::ALLOWED_NAMESPACE;
+		if (!preg_match_all("/{$ns}+/", $name)){
+			throw new \Exception("cannot set name \"{$name}\"");
+		}
+		$this->name = $name;
+	}
+
+	public function getName(): string{
 		return $this->name;
 	}
 
-	abstract public function onInject(string &$code): void;
+	abstract public function onInject(string &$code, ?CommandSender $executor = null): void;
 }
