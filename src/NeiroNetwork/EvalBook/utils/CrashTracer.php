@@ -41,7 +41,7 @@ final class CrashTracer{
 		$contains = fn(string $file) : bool => str_contains($file, "EvalBook") && str_contains($file, "eval()'d code");
 		if(!($isPluginError = $contains($lastExceptionError["fullFile"]))){
 			foreach($lastExceptionError["trace"] as $trace){
-				if($isPluginError = $contains($trace["file"])){
+				if($isPluginError = $contains($trace["file"] ?? "")){
 					break;
 				}
 			}
