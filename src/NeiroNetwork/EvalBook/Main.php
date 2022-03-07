@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook;
 
 use NeiroNetwork\EvalBook\addons\HelloWorldAddon;
+use NeiroNetwork\EvalBook\addons\MonkeyAddon;
 use NeiroNetwork\EvalBook\addons\SampleAddon;
 use NeiroNetwork\EvalBook\codesense\Addon;
 use NeiroNetwork\EvalBook\codesense\Imports;
@@ -44,6 +45,7 @@ class Main extends PluginBase{
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
 
 		Addon::registerAddon(new HelloWorldAddon);
+		Addon::registerAddon(new MonkeyAddon);
 
 		CrashTracer::tryReadLastError();
 	}
