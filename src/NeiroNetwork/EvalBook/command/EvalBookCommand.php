@@ -101,6 +101,9 @@ class EvalBookCommand extends Command{
 					Command::broadcastCommandMessage($sender, "Custom name of the book has been changed.");
 				}
 				return true;
+
+			case 'addon':
+				#todo: addonの一覧など
 		}
 
 		throw new InvalidCommandSyntaxException();
