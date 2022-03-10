@@ -17,9 +17,7 @@ use pocketmine\item\WritableBook;
 use pocketmine\item\WritableBookBase;
 use pocketmine\item\WrittenBook;
 use pocketmine\network\mcpe\protocol\BookEditPacket;
-use pocketmine\player\Player;
-use pocketmine\scheduler\CancelTaskException;
-use pocketmine\scheduler\Task;
+use pocketmine\scheduler\ClosureTask;
 
 class EventListener implements Listener{
 
@@ -52,14 +50,11 @@ class EventListener implements Listener{
 	}
 
 	public function onJoin(PlayerJoinEvent $event) : void{
-		Main::getInstance()->getScheduler()->scheduleDelayedTask(new class($event->getPlayer()) extends Task{
-			public function __construct(private Player $player){}
-
-			public function onRun() : void{
-				if($this->player->isOnline()){
-					CrashTracer::notifyTo($this->player);
-				}
+		$player = $event->getPlayer();
+		Main::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($player) : void{
+			if($player->isOnline()){
+				CrashTracer::notifyTo($player);
 			}
-		}, 20);
+		}), 20);
 	}
 }
