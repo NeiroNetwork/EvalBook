@@ -21,6 +21,9 @@ class Main extends PluginBase{
 		return self::$instance;
 	}
 
+	/**
+	 * @internal
+	 */
 	public function eval(string $code) : void{
 		eval($code);
 	}
