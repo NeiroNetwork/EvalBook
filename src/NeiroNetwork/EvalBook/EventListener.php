@@ -57,4 +57,14 @@ class EventListener implements Listener{
 			}
 		}), 20);
 	}
+
+	/**
+	 * @handleCancelled
+	 * @priority LOWEST
+	 */
+	public function allowInvalidBook(PlayerEditBookEvent $event) : void{
+		if($event->isCancelled() && $event->getPlayer()->hasPermission(EvalBookPermissions::ROOT_OPERATOR)){
+			$event->uncancel();
+		}
+	}
 }
