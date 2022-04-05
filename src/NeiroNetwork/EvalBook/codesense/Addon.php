@@ -66,13 +66,20 @@ abstract class Addon {
 		return $found;
 	}
 
+	public static function isValidName(string $name): bool{
+		$ns = self::ALLOWED_NAMESPACE;
+		if (!preg_match_all("/{$ns}+/", $name)){
+			return false;
+		}
+		return true;
+	}
+
 	public function __construct(){
 		$this->name = (new \ReflectionClass($this))->getShortName();
 	}
 
 	protected function setName(string $name): void{
-		$ns = self::ALLOWED_NAMESPACE;
-		if (!preg_match_all("/{$ns}+/", $name)){
+		if (!self::isValidName($name)){
 			throw new \Exception("cannot set name \"{$name}\"");
 		}
 		$this->name = $name;
