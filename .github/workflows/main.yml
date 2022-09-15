@@ -2,7 +2,10 @@ name: build
 
 on:
   push:
-    tags: '*'
+    tags: '*.*.*'
+
+env:
+  OUTPUT_FILE: ${{ github.event.repository.name }}_v${{ github.ref_name }}.phar
 
 jobs:
   build:
@@ -10,13 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Build plugin
-      run: |
-        curl -sLo .php https://raw.githubusercontent.com/pmmp/DevTools/master/src/ConsoleScript.php
-        php -dphar.readonly=0 .php --make ./ --out ${{ github.event.repository.name }}.phar
+      run: curl -sL https://raw.githubusercontent.com/pmmp/DevTools/master/src/ConsoleScript.php | php -dphar.readonly=0 -- --make ./ --out $OUTPUT_FILE
 
     - uses: softprops/action-gh-release@v0.1.14
       with:
-        files: ${{ github.event.repository.name }}.phar
+        files: ${{ env.OUTPUT_FILE }}

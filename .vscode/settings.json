@@ -1,0 +1,22 @@
+{
+	"editor.detectIndentation": false, // インデント構成の検知を無効化
+	"editor.insertSpaces": false, // タブを使用する
+	"intelephense.environment.phpVersion": "8.0.21", // PMMPのバージョンに合わせる
+	"editor.tabCompletion": "on",
+	"emmet.excludeLanguages": [ // HTMLやcssが書きやすくなる拡張機能らしいですが、pmmpの場合はほぼ使わないので無効化(勝手に展開されて邪魔)
+		"markdown",
+		"php"
+	],
+	"files.insertFinalNewline": true, // .editerconfig の仕様に合わせる
+	"[yaml]": {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	},
+	"[json]": {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 4
+	},
+	"[php]": {
+		"editor.tabSize": 4
+	}
+}
