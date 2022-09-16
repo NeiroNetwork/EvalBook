@@ -11,6 +11,7 @@ class EvalBookCommand extends BaseCommand{
 
 	protected function prepare() : void{
 		$this->registerSubCommand(new ReloadCommand("reload", "Reload permitted operators configuration file"));
+		$this->registerSubCommand(new NewCommand("new", "Get a new eval book", ["get", "give"]));
 	}
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
