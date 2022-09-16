@@ -23,4 +23,8 @@ final class OperatorsStore{
 	public static function getNames() : array{
 		return self::$operators->getAll(true);
 	}
+
+	public static function exists(string $name) : bool{
+		return self::$operators->exists($name, true);
+	}
 }
