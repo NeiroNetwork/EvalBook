@@ -4,55 +4,60 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\item;
 
-use NeiroNetwork\EvalBook\codesense\CodeSense;
-use NeiroNetwork\EvalBook\Main;
-use NeiroNetwork\EvalBook\utils\ExceptionUtils;
-use pocketmine\command\CommandSender;
+use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\Item;
+use pocketmine\item\VanillaItems;
+use pocketmine\item\WritableBook;
 use pocketmine\item\WritableBookBase;
+use pocketmine\item\WritableBookPage;
+use pocketmine\item\WrittenBook;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
-use pocketmine\utils\TextFormat;
 
-abstract class ExecutableBook{
+final class ExecutableBook{
 
-	public static function isExecutableBook(Item $item) : bool{
+	public static function validItem(Item $item) : bool{
 		return $item->getNamedTag()->getByte("EvalBook", 0) === 1;
 	}
 
-	public static function getPermission(WritableBookBase|string $bookOrPerm) : ?Permission{
-		if(!is_string($bookOrPerm)){
-			$bookOrPerm = $bookOrPerm->getLore()[0] ?? "";
-		}
-		return PermissionManager::getInstance()->getPermission("evalbook.execute.$bookOrPerm");
+	public static function getPermission(Item $item) : Permission{
+		$name = "evalbook.execute.{$item->getLore()[0]}";
+		$permission = PermissionManager::getInstance()->getPermission($name);
+		assert($permission instanceof Permission);
+		return $permission;
 	}
 
-	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
-		var_dump($code = self::parseBookCode($book));
-		$sense = CodeSense::injectImport($code);
-		if($executor !== null){
-			$sense = CodeSense::injectBookExecutedPlayer($sense, $executor);
-		}
-		try{
-			Main::getInstance()->eval($sense);
-		}catch(\Throwable $exception){
-			/**
-			 * fatal error はどうあがいてもキャッチできない
-			 * 例えば: クラスの間違った継承、クラスや関数を2回以上定義する
-			 */
-			$executor?->sendMessage(TextFormat::RED . ExceptionUtils::toString($exception));
-			return false;
-		}
-		return true;
+	public static function getCode(WritableBookBase $book) : string{
+		$pages = array_map(fn(WritableBookPage $page) : string => $page->getText(), $book->getPages());
+		$pages = array_filter($pages, fn(string $text) : bool => trim($text) !== "");
+		return implode(PHP_EOL, $pages);
 	}
 
-	public static function parseBookCode(WritableBookBase $book) : string{
-		$stack = [];
-		foreach($book->getPages() as $page){
-			if(($text = trim($page->getText())) !== ""){
-				$stack[] = $text;
-			}
-		}
-		return implode(PHP_EOL, $stack);
+	// FIXME: 関数のやりたいことが明確じゃない(ちゃんと設計されてない)
+	public static function makeWritable(WritableBookBase $base = null) : WritableBook{
+		$book = VanillaItems::WRITABLE_BOOK()
+			->setPages($base?->getPages() ?? [])
+			->setCustomName(empty($base?->getCustomName()) ? "EvalBook" : $base->getCustomName())
+			->addEnchantment(new EnchantmentInstance(VanillaEnchantments::POWER(), 10))
+			->setLore(empty($base->getLore()[0]) ? ["default"] : $base->getLore());
+
+		$book->getNamedTag()->setByte("EvalBook", 1);
+
+		return $book;
+	}
+
+	// FIXME: 関数のやりたいことが明確じゃない(ちゃんと設計されてない)
+	public static function makeWritten(WritableBookBase $base) : WrittenBook{
+		$book = VanillaItems::WRITTEN_BOOK()
+			->setPages($base->getPages())
+			->setAuthor($base instanceof WrittenBook ? $base->getAuthor() : "")
+			->setTitle($base instanceof WrittenBook ? $base->getTitle() : "");
+		$book->setCustomName($book->getTitle())
+			->setLore(empty($base->getLore()[0]) ? ["default"] : $base->getLore());
+
+		$book->getNamedTag()->setByte("EvalBook", 1);
+
+		return $book;
 	}
 }
