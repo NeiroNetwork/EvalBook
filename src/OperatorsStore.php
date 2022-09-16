@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace NeiroNetwork\EvalBook;
+
+use pocketmine\utils\Config;
+use Webmozart\PathUtil\Path;
+
+final class OperatorsStore{
+
+	private static Config $operators;
+
+	public static function load(string $dataFolder) : void{
+		self::$operators = new Config(Path::join($dataFolder, "allowlist.txt"), Config::ENUM);
+	}
+
+	public static function reload() : void{
+		self::$operators->reload();
+	}
+
+	/** @return string[] */
+	public static function getNames() : array{
+		return self::$operators->getAll(true);
+	}
+}

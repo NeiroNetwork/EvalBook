@@ -10,8 +10,6 @@ use NeiroNetwork\EvalBook\crashtracer\CrashErrorNotifier;
 use NeiroNetwork\EvalBook\crashtracer\CrashTracer;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
-use Webmozart\PathUtil\Path;
 
 class Main extends PluginBase{
 
@@ -21,17 +19,11 @@ class Main extends PluginBase{
 		return self::$instance;
 	}
 
-	private Config $operators;
-
 	/**
 	 * @internal
 	 */
 	public function eval(string $code) : void{
 		eval($code);
-	}
-
-	public function getOperators() : Config{
-		return $this->operators;
 	}
 
 	protected function onLoad() : void{
@@ -45,7 +37,7 @@ class Main extends PluginBase{
 	protected function onEnable() : void{
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this), $this);
-		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);
+		OperatorsStore::load($this->getDataFolder());
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
 	}
 
