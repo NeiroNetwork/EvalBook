@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\listener;
 
 use NeiroNetwork\EvalBook\OperatorsStore;
+use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
 
