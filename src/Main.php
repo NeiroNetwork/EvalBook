@@ -16,11 +16,12 @@ use Webmozart\PathUtil\Path;
 class Main extends PluginBase{
 
 	private static self $instance;
-	private Config $operators;
 
 	public static function getInstance() : self{
 		return self::$instance;
 	}
+
+	private Config $operators;
 
 	/**
 	 * @internal
@@ -34,13 +35,14 @@ class Main extends PluginBase{
 	}
 
 	protected function onLoad() : void{
+		self::$instance = $this;
+
 		EvalBookPermissions::registerPermissions();
 		Imports::getInstance();
 		CrashTracer::readLastError($this);
 	}
 
 	protected function onEnable() : void{
-		self::$instance = $this;
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this), $this);
 		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);
