@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use CortexPE\Commando\PacketHooker;
 use NeiroNetwork\EvalBook\codesense\Imports;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\crashtracer\CrashErrorNotifier;
@@ -38,7 +39,8 @@ class Main extends PluginBase{
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this), $this);
 		OperatorsStore::load($this->getDataFolder());
-		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand("evalbook"));
+		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook"));
+		if(!PacketHooker::isRegistered()) PacketHooker::register($this);
 	}
 
 	protected function onDisable() : void{
