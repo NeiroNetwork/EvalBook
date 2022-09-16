@@ -41,7 +41,7 @@ class Main extends PluginBase{
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this->getScheduler()), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PermissionGranter(), $this);
 		OperatorsStore::load($this->getDataFolder());
-		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook"));
+		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook", "EvalBook commands"));
 		if(!PacketHooker::isRegistered()) PacketHooker::register($this);
 	}
 
