@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\EvalBook\crashtracer;
+namespace NeiroNetwork\EvalBook\listener;
 
+use NeiroNetwork\EvalBook\crashtracer\CrashTracer;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\ClosureTask;
+use pocketmine\scheduler\TaskScheduler;
 
 class CrashErrorNotifier implements Listener{
 
 	private array $sentPlayers = [];
 
-	public function __construct(private Plugin $plugin){}
+	public function __construct(private TaskScheduler $scheduler){}
 
 	public function onJoin(PlayerJoinEvent $event) : void{
 		$player = $event->getPlayer();
@@ -23,7 +24,7 @@ class CrashErrorNotifier implements Listener{
 
 		$this->sentPlayers[$name] = true;
 
-		$this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(
+		$this->scheduler->scheduleDelayedTask(new ClosureTask(
 			fn() => $player->sendMessage(CrashTracer::getErrorMessage())
 		), 20);
 	}

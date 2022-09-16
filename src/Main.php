@@ -7,10 +7,10 @@ namespace NeiroNetwork\EvalBook;
 use CortexPE\Commando\PacketHooker;
 use NeiroNetwork\EvalBook\codesense\Imports;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
-use NeiroNetwork\EvalBook\crashtracer\CrashErrorNotifier;
 use NeiroNetwork\EvalBook\crashtracer\CrashTracer;
+use NeiroNetwork\EvalBook\listener\CrashErrorNotifier;
+use NeiroNetwork\EvalBook\listener\PermissionGranter;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
-use NeiroNetwork\EvalBook\permission\PermissionGranter;
 use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase{
@@ -38,7 +38,7 @@ class Main extends PluginBase{
 
 	protected function onEnable() : void{
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
-		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this->getScheduler()), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PermissionGranter(), $this);
 		OperatorsStore::load($this->getDataFolder());
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook"));

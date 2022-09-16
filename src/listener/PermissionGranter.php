@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\EvalBook\permission;
+namespace NeiroNetwork\EvalBook\listener;
 
 use NeiroNetwork\EvalBook\OperatorsStore;
 use pocketmine\event\Listener;
