@@ -10,7 +10,7 @@ use pocketmine\command\CommandSender;
 class EvalBookCommand extends BaseCommand{
 
 	protected function prepare() : void{
-		$this->registerSubCommand(new ReloadCommand("reload"));
+		$this->registerSubCommand(new ReloadCommand("reload", "Reload permitted operators configuration file"));
 	}
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
