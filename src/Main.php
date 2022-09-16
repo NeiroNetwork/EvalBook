@@ -34,13 +34,13 @@ class Main extends PluginBase{
 	}
 
 	protected function onLoad() : void{
+		EvalBookPermissions::registerPermissions();
 		Imports::getInstance();
 		CrashTracer::readLastError($this);
 	}
 
 	protected function onEnable() : void{
 		self::$instance = $this;
-		EvalBookPermissions::registerPermissions();
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this), $this);
 		$this->operators = new Config(Path::join($this->getDataFolder(), "allowlist.txt"), Config::ENUM);

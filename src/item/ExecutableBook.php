@@ -6,7 +6,6 @@ namespace NeiroNetwork\EvalBook\item;
 
 use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\Main;
-use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use NeiroNetwork\EvalBook\utils\ExceptionUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
@@ -25,7 +24,7 @@ abstract class ExecutableBook{
 		if(!is_string($bookOrPerm)){
 			$bookOrPerm = $bookOrPerm->getLore()[0] ?? "";
 		}
-		return PermissionManager::getInstance()->getPermission(EvalBookPermissionNames::EVALBOOK_EXECUTE . ".$bookOrPerm");
+		return PermissionManager::getInstance()->getPermission("evalbook.execute.$bookOrPerm");
 	}
 
 	public static function execute(WritableBookBase $book, CommandSender $executor = null) : bool{
