@@ -40,7 +40,7 @@ final class ExecutableBook{
 			->setPages($base?->getPages() ?? [])
 			->setCustomName(empty($base?->getCustomName()) ? "EvalBook" : $base->getCustomName())
 			->addEnchantment(new EnchantmentInstance(VanillaEnchantments::POWER(), 10))
-			->setLore(empty($base->getLore()[0]) ? ["default"] : $base->getLore());
+			->setLore(empty($base?->getLore()[0]) ? ["default"] : $base->getLore());
 
 		$book->getNamedTag()->setByte("EvalBook", 1);
 
