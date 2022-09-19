@@ -12,6 +12,7 @@ final class EvalBookPermissionNames{
 	public const EXECUTE_OP = "evalbook.execute.op";
 	public const EXECUTE_EVERYONE = "evalbook.execute.everyone";
 
+	public const COMMAND = "evalbook.command";
 	public const COMMAND_RELOAD = "evalbook.command.reload";
 	public const COMMAND_NEW = "evalbook.command.new";
 	public const COMMAND_PERM = "evalbook.command.perm";
