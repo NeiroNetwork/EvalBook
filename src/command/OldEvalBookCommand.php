@@ -40,15 +40,6 @@ class OldEvalBookCommand extends Command{
 		}
 
 		switch(strtolower(array_shift($args) ?? "")){
-			case "exec":
-			case "execute":
-			case "run":
-			case "eval":
-				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_EXEC)
-					&& ($item = $this->checkItem($sender))
-					&& $this->testPermission($sender, ExecutableBook::getPermission($item)->getName())
-				) ExecutableBook::execute($item, $sender);
-				return true;
 
 			case "perm":
 			case "permission":
