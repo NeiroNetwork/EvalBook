@@ -15,6 +15,7 @@ class EvalBookCommand extends BaseCommand{
 		$this->registerSubCommand(new ReloadCommand("reload", "Reload permitted operators configuration file"));
 		$this->registerSubCommand(new NewCommand("new", "Get a new eval book", ["get", "give"]));
 		$this->registerSubCommand(new PermCommand("perm", "Set the book's execution permission", ["permission"]));
+		$this->registerSubCommand(new CustomNameCommand("customname", "Rename the book", ["name"]));
 	}
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
