@@ -20,7 +20,7 @@ jobs:
 
     - name: Inject virions
       run: php -dphar.readonly=0 -r '
-        file_put_contents("virion.php", file_get_contents("https://raw.githubusercontent.com/JaxkDev/poggit/virion-prefix/assets/php/virion.php"));
+        file_put_contents("virion.php", file_get_contents("https://gist.githubusercontent.com/Nerahikada/a1fbb18c6fe4b2e10bb7baa7de9d0710/raw/virion.php"));
         $data = yaml_parse_file(".poggit.yml") ?:["projects" => [[]]];
         foreach(reset($data["projects"])["libs"] ?? [] as $lib){
           file_put_contents("virion.phar", file_get_contents("https://poggit.pmmp.io/v.dl/{$lib["src"]}/" . ($lib["version"] ?? "*")));
