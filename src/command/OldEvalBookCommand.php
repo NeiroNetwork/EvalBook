@@ -41,22 +41,6 @@ class OldEvalBookCommand extends Command{
 
 		switch(strtolower(array_shift($args) ?? "")){
 
-			case "perm":
-			case "permission":
-				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_PERM)){
-					if(ExecutableBook::getPermission($permission = strtolower(array_shift($args) ?? "")) === null){
-						$sender->sendMessage("Permission \"$permission\" does not exist.");
-						return true;
-					}
-					if(!($item = $this->checkItem($sender))){
-						return true;
-					}
-					/** @var Player $sender */
-					$sender->getInventory()->setItemInHand($item->setLore([$permission]));
-					Command::broadcastCommandMessage($sender, "Execute permission has been successfully changed to $permission.");
-				}
-				return true;
-
 			case "customname":
 			case "name":
 				if($this->testPermission($sender, EvalBookPermissionNames::COMMAND_CUSTOM_NAME) && ($item = $this->checkItem($sender))){
