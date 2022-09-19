@@ -25,16 +25,19 @@ class Main extends PluginBase{
 		self::$instance = $this;
 
 		EvalBookPermissions::registerPermissions();
+
 		CrashTracer::readLastError($this);
 	}
 
 	protected function onEnable() : void{
+		OperatorsStore::load($this->getDataFolder());
+
+		if(!PacketHooker::isRegistered()) PacketHooker::register($this);
+		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook", "EvalBook commands"));
+
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this->getScheduler()), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PermissionGranter(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new BookEventListener(), $this);
-		OperatorsStore::load($this->getDataFolder());
-		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook", "EvalBook commands"));
-		if(!PacketHooker::isRegistered()) PacketHooker::register($this);
 	}
 
 	protected function onDisable() : void{
