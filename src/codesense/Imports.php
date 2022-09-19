@@ -28,6 +28,9 @@ final class Imports{
 
 		$classesByName = [];
 		foreach($definedClasses as $class){
+			// グローバスな名前空間にいるクラスは読み込まない (エラーが出る)
+			if(!str_contains($class, "\\")) continue;
+
 			$name = array_reverse(explode("\\", $class))[0];
 			$classesByName[$name][] = $class;
 		}
