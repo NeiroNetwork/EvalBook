@@ -7,6 +7,7 @@ namespace NeiroNetwork\EvalBook;
 use CortexPE\Commando\PacketHooker;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\crashtracer\CrashTracer;
+use NeiroNetwork\EvalBook\listener\BookEventListener;
 use NeiroNetwork\EvalBook\listener\CrashErrorNotifier;
 use NeiroNetwork\EvalBook\listener\PermissionGranter;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
@@ -16,16 +17,9 @@ class Main extends PluginBase{
 
 	private static self $instance;
 
-	public static function getInstance() : self{
-		return self::$instance;
-	}
+	public static function evalPhp(string $code) : void{ self::$instance->evalInternal($code); }
 
-	/**
-	 * @internal
-	 */
-	public function eval(string $code) : void{
-		eval($code);
-	}
+	private function evalInternal(string $code) : void{ eval($code); }
 
 	protected function onLoad() : void{
 		self::$instance = $this;
@@ -35,9 +29,9 @@ class Main extends PluginBase{
 	}
 
 	protected function onEnable() : void{
-		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this->getScheduler()), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PermissionGranter(), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new BookEventListener(), $this);
 		OperatorsStore::load($this->getDataFolder());
 		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook", "EvalBook commands"));
 		if(!PacketHooker::isRegistered()) PacketHooker::register($this);

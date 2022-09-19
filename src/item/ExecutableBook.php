@@ -18,6 +18,8 @@ use pocketmine\permission\PermissionManager;
 final class ExecutableBook{
 
 	public static function validItem(Item $item) : bool{
+		try{ self::getPermission($item); }catch(\AssertionError){ return false; }
+		if(!$item instanceof WritableBookBase) return false;
 		return $item->getNamedTag()->getByte("EvalBook", 0) === 1;
 	}
 
@@ -47,17 +49,10 @@ final class ExecutableBook{
 		return $book;
 	}
 
-	// FIXME: 関数のやりたいことが明確じゃない(ちゃんと設計されてない)
-	public static function makeWritten(WritableBookBase $base) : WrittenBook{
-		$book = VanillaItems::WRITTEN_BOOK()
-			->setPages($base->getPages())
-			->setAuthor($base instanceof WrittenBook ? $base->getAuthor() : "")
-			->setTitle($base instanceof WrittenBook ? $base->getTitle() : "");
-		$book->setCustomName($book->getTitle())
-			->setLore(empty($base->getLore()[0]) ? ["default"] : $base->getLore());
-
+	// FIXME: 関数の名前が妥当じゃない気がする
+	public static function makeWritten(WrittenBook $book) : WrittenBook{
+		$book->setCustomName($book->getTitle());
 		$book->getNamedTag()->setByte("EvalBook", 1);
-
 		return $book;
 	}
 }

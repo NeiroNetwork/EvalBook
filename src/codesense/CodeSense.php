@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\codesense;
 
-use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
 
 class CodeSense{
 
@@ -18,7 +18,7 @@ class CodeSense{
 		return $importString . $code;
 	}
 
-	public static function injectBookExecutedPlayer(string $code, CommandSender $sender) : string{
+	public static function injectBookExecutedPlayer(string $code, Player $sender) : string{
 		$list = [];
 		foreach(["player", "executor", "executer"] as $str){
 			$STR = strtoupper($str);
