@@ -63,7 +63,7 @@ final class Imports{
 					T_NAME_QUALIFIED, T_STRING => $next->text . "\\",
 					default => "",
 				},
-				T_CLASS => ($next = $tokens[$key + 1])->id === T_STRING && $classes[] = $namespace . $next->text,
+				T_CLASS, T_INTERFACE, T_TRAIT => ($next = $tokens[$key + 1])->id === T_STRING && $classes[] = $namespace . $next->text,
 				default => null,
 			};
 		}
