@@ -18,16 +18,23 @@ use pocketmine\permission\PermissionManager;
 final class ExecutableBook{
 
 	public static function validItem(Item $item) : bool{
-		try{ self::getPermission($item); }catch(\AssertionError){ return false; }
-		if(!$item instanceof WritableBookBase) return false;
-		return $item->getNamedTag()->getByte("EvalBook", 0) === 1;
+		return self::getPermissionOrNull($item) !== null &&
+			$item instanceof WritableBookBase &&
+			$item->getNamedTag()->getByte("EvalBook", 0) === 1;
 	}
 
 	public static function getPermission(Item $item) : Permission{
-		$name = "evalbook.execute.{$item->getLore()[0]}";
-		$permission = PermissionManager::getInstance()->getPermission($name);
+		$permission = self::getPermissionOrNull($item);
 		assert($permission instanceof Permission);
 		return $permission;
+	}
+
+	private static function getPermissionOrNull(Item $item) : ?Permission{
+		return self::getPermissionByShortName($item->getLore()[0] ?? "unknown");
+	}
+
+	public static function getPermissionByShortName(string $name) : ?Permission{
+		return PermissionManager::getInstance()->getPermission("evalbook.execute.$name");
 	}
 
 	public static function getCode(WritableBookBase $book) : string{
