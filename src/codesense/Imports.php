@@ -4,67 +4,67 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\codesense;
 
-use pocketmine\utils\SingletonTrait;
-
-class Imports{
-	use SingletonTrait;
-
-	public static function get() : array{
-		return self::getInstance()->getImports();
-	}
+final class Imports{
 
 	/** @var string[] */
-	private array $importClasses = [];
+	private static array $importClasses = [];
 
-	public function __construct(){
-		// あらかじめ存在しそうなクラスを検索して(ReflectionClassで参照させて)読み込む
-		$recursiveDirectoryIterator = new \RecursiveDirectoryIterator(\pocketmine\PATH, \FilesystemIterator::SKIP_DOTS);
-		$recursiveIteratorIterator = new \RecursiveIteratorIterator($recursiveDirectoryIterator, \RecursiveIteratorIterator::CHILD_FIRST);
-		/** @var \RecursiveDirectoryIterator $file */
-		foreach($recursiveIteratorIterator as $file){
-			// PHPファイルである
-			if($file->isFile() && strtolower($file->getExtension()) === "php"){
-				$fileContents = file_get_contents($file->getPathname());
-				// 「namespace ～;」が含まれるか検索
-				if(preg_match("/namespace [0-9a-zA-Z_\\\]+;/", $fileContents, $matches) !== 1){
-					continue;
-				}
-				$namespace = substr($matches[0], 10, -1);
-
-				preg_match_all("/class .+/", $fileContents, $matches0);
-				preg_match_all("/interface .+/", $fileContents, $matches1);
-				preg_match_all("/trait .+/", $fileContents, $matches2);
-
-				foreach(array_merge($matches0[0], $matches1[0], $matches2[0]) as $classString){
-					// クラス名に使われなさそうな文字列が含まれていない
-					if(preg_match("/[^0-9a-zA-Z_ \\\{},]/", $classString) === 0){
-						try{
-							preg_match("/[0-9a-zA-Z_]+/", explode(" ", $classString)[1], $matches3);
-							new \ReflectionClass("$namespace\\" . $matches3[0]);
-						}catch(\ReflectionException){
-						}
-					}
-				}
-			}
-		}
-
-		$classes = [];
-
-		$allClasses = array_merge(get_declared_classes(), get_declared_interfaces(), get_declared_traits());
-		/** @var string $class */
-		foreach($allClasses as $class){
-			$reflection = new \ReflectionClass($class);
-			if($reflection->inNamespace() && !$reflection->isAnonymous()){
-				$classes[$reflection->getShortName()][] = $class;
-			}
-		}
-
-		foreach($classes as $classList){
-			$this->importClasses[] = reset($classList);
-		}
+	public static function get() : array{
+		empty(self::$importClasses) && self::generate();
+		return self::$importClasses;
 	}
 
-	public function getImports() : array{
-		return $this->importClasses;
+	public static function generate() : void{
+		$phpFiles = array_merge(
+			self::listPhpFiles(\pocketmine\PATH . "src"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor"),
+		);
+
+		$definedClasses = [];
+		foreach($phpFiles as $pathname){
+			$classes = self::listClasses(\PhpToken::tokenize(file_get_contents($pathname), TOKEN_PARSE));
+			array_push($definedClasses, ...$classes);
+		}
+
+		$classesByName = [];
+		foreach($definedClasses as $class){
+			$name = array_reverse(explode("\\", $class))[0];
+			$classesByName[$name][] = $class;
+		}
+
+		// 同じ名前を持つクラスからランダムで一つのクラスを選ぶ
+		self::$importClasses = array_map(fn($classes) => $classes[array_rand($classes)], $classesByName);
+	}
+
+	/** @return string[] */
+	private static function listPhpFiles(string $search) : array{
+		$iterator = new \RecursiveDirectoryIterator($search, \FilesystemIterator::SKIP_DOTS);
+		$iterator = new \CallbackFilterIterator(
+			new \RecursiveIteratorIterator($iterator),
+			fn(\SplFileInfo $info) => $info->isFile() && $info->getExtension() === "php"
+		);
+		return array_keys(iterator_to_array($iterator));
+	}
+
+	/** @param \PhpToken[] $tokens */
+	private static function listClasses(array $tokens) : array{
+		/** @var \PhpToken[] $tokens */
+		$tokens = array_values(array_filter($tokens, fn(\PhpToken $token) => !$token->isIgnorable()));
+
+		$classes = [];
+		$namespace = "";
+
+		foreach($tokens as $key => $token){
+			match($token->id){
+				T_NAMESPACE => $namespace = match(($next = $tokens[$key + 1])->id){
+					T_NAME_QUALIFIED, T_STRING => $next->text . "\\",
+					default => "",
+				},
+				T_CLASS => ($next = $tokens[$key + 1])->id === T_STRING && $classes[] = $namespace . $next->text,
+				default => null,
+			};
+		}
+
+		return $classes;
 	}
 }

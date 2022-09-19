@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook;
 
 use CortexPE\Commando\PacketHooker;
-use NeiroNetwork\EvalBook\codesense\Imports;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
 use NeiroNetwork\EvalBook\crashtracer\CrashTracer;
 use NeiroNetwork\EvalBook\listener\CrashErrorNotifier;
@@ -32,7 +31,6 @@ class Main extends PluginBase{
 		self::$instance = $this;
 
 		EvalBookPermissions::registerPermissions();
-		Imports::getInstance();
 		CrashTracer::readLastError($this);
 	}
 
