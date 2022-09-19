@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\EvalBook\command;
+namespace NeiroNetwork\EvalBook\command\sub;
 
 use NeiroNetwork\EvalBook\item\ExecutableBook;
 use pocketmine\command\CommandSender;
