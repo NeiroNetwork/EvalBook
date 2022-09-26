@@ -6,6 +6,7 @@ namespace NeiroNetwork\EvalBook;
 
 use CortexPE\Commando\PacketHooker;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
+use NeiroNetwork\EvalBook\utils\CrashReportDisabler;
 use NeiroNetwork\EvalBook\utils\CrashTracer;
 use NeiroNetwork\EvalBook\listener\BookEventListener;
 use NeiroNetwork\EvalBook\listener\CrashErrorNotifier;
@@ -26,6 +27,7 @@ class Main extends PluginBase{
 
 		EvalBookPermissions::registerPermissions();
 
+		CrashReportDisabler::disableAutoReport($this->getServer());
 		CrashTracer::readLastError($this);
 	}
 
