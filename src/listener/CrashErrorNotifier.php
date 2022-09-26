@@ -25,7 +25,7 @@ class CrashErrorNotifier implements Listener{
 		$this->sentPlayers[$name] = true;
 
 		$this->scheduler->scheduleDelayedTask(new ClosureTask(
-			fn() => $player->sendMessage(CrashTracer::getErrorMessage())
+			fn() => $player->sendMessage("EvalBookによるクラッシュを検出しました:\n§c" . CrashTracer::getErrorMessage())
 		), 20);
 	}
 }
