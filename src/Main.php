@@ -6,7 +6,7 @@ namespace NeiroNetwork\EvalBook;
 
 use CortexPE\Commando\PacketHooker;
 use NeiroNetwork\EvalBook\command\EvalBookCommand;
-use NeiroNetwork\EvalBook\crashtracer\CrashTracer;
+use NeiroNetwork\EvalBook\utils\CrashTracer;
 use NeiroNetwork\EvalBook\listener\BookEventListener;
 use NeiroNetwork\EvalBook\listener\CrashErrorNotifier;
 use NeiroNetwork\EvalBook\listener\PermissionGranter;

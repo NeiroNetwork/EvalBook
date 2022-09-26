@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\EvalBook\crashtracer;
+namespace NeiroNetwork\EvalBook\utils;
 
 use NeiroNetwork\EvalBook\Main;
 use Webmozart\PathUtil\Path;

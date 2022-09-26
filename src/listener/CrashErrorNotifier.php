@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\listener;
 
-use NeiroNetwork\EvalBook\crashtracer\CrashTracer;
+use NeiroNetwork\EvalBook\utils\CrashTracer;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\scheduler\ClosureTask;
