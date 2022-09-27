@@ -16,6 +16,11 @@ namespace {
 			var_dump(...$value);
 			$output = ob_get_clean();
 
+			$cleanOutput = "";
+			foreach(mb_str_split($output) as $string){
+				$cleanOutput .= $string === "\x00" || mb_ord($string) === false ? "?" : $string;
+			}
+
 			$player->sendData([$player], [EntityMetadataProperties::HAS_NPC_COMPONENT => new ByteMetadataProperty(1)]);
 			$networkSession = $player->getNetworkSession();
 			if($revertGameMode = $player->isCreative()){
@@ -24,7 +29,7 @@ namespace {
 			$networkSession->sendDataPacket(NpcDialoguePacket::create(
 				$player->getId(),
 				NpcDialoguePacket::ACTION_OPEN,
-				$output,
+				$cleanOutput,
 				uniqid(),
 				(substr_count($output, "\n") >= 1639 ? "§c出力が1639行を超えました：正常に表示されません！" : "var_dump() の出力結果"),
 				""
