@@ -6,24 +6,33 @@ namespace NeiroNetwork\EvalBook\codesense;
 
 use pocketmine\player\Player;
 
-class CodeSense{
+final class CodeSense{
 
-	public static function injectImport(string $code) : string{
+	public static function doAll(string $code, mixed $executor) : string{
+		self::injectImports($code);
+		if($executor instanceof Player) self::injectBookExecutedPlayer($code, $executor);
+		return $code;
+	}
+
+	private static function injectImports(string &$code) : void{
 		$importString = "";
 		foreach(Imports::get() as $class){
 			if(!str_contains($code, $class)){
 				$importString .= "use $class;";
 			}
 		}
-		return $importString . $code;
+
+		$code = $importString . $code;
 	}
 
-	public static function injectBookExecutedPlayer(string $code, Player $sender) : string{
+	private static function injectBookExecutedPlayer(string &$code, Player $player) : void{
 		$list = [];
 		foreach(["player", "executor", "executer"] as $str){
 			$STR = strtoupper($str);
 			array_push($list, "\$_$str", "\$_{$str}_", "\$_$STR", "\$_{$STR}_");
 		}
-		return implode("=", $list) . " = \pocketmine\Server::getInstance()->getPlayerExact('{$sender->getName()}');$code";
+
+		$getPlayer = "\pocketmine\Server::getInstance()->getPlayerExact('{$player->getName()}')";
+		$code = implode("=", $list) . "=$getPlayer;" . $code;
 	}
 }
