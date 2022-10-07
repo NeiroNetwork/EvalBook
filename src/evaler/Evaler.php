@@ -16,8 +16,10 @@ final class Evaler{
 	public static function promote(string $code, CommandSender $executor = null) : void{
 		var_dump($code);	// TODO: log ran scripts
 
+		$code = CodeSense::doAll($code, $executor);
+
 		try{
-			Main::evalPhp(CodeSense::doAll($code, $executor));
+			Main::evalPhp($code);
 		}catch(\Throwable $exception){
 			/**
 			 * fatal error はどうあがいてもキャッチできない

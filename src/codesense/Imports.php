@@ -17,13 +17,22 @@ final class Imports{
 	public static function generate() : void{
 		$phpFiles = array_merge(
 			self::listPhpFiles(\pocketmine\PATH . "src"),
-			self::listPhpFiles(\pocketmine\PATH . "vendor"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/adhocore"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/brick"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/fgrosse"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/netresearch"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/pocketmine"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/ramsey"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/symfony"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/webmozart"),
 		);
 
 		$definedClasses = [];
 		foreach($phpFiles as $pathname){
-			$classes = self::listClasses(\PhpToken::tokenize(file_get_contents($pathname), TOKEN_PARSE));
-			array_push($definedClasses, ...$classes);
+			try{
+				$tokens = \PhpToken::tokenize(file_get_contents($pathname), TOKEN_PARSE);
+			}catch(\ParseError){ continue; }
+			array_push($definedClasses, ...self::listClasses($tokens));
 		}
 
 		$classesByName = [];
