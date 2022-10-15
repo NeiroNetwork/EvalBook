@@ -24,31 +24,57 @@
 | `evalbook.exec.everyone` | `everyone` | 全員がコードを実行できます |
 
 ## コードの書き方
-- ほとんどのクラスは自動的にインポートされるため、use文を書く必要はありません（書いてもエラーにはなりません）。  
-  - しかし`pocketmine\item\Bed`や`pocketmine\block\Bed`のような同じ名前のクラスはどちらか一つだけがインポートされる(どちらがインポートされるかは不明な)ためuse文を書く必要があります。
-- クラスや関数を定義するときは**1回だけ**定義するよう気を付けてください。
+### クラスのインポート (use文) について
+ほとんどのクラスは自動的にインポートされるため、インポート(use)文を書く必要はありません。  
+また、重複したインポート文を取り除く努力は行いますが、完全ではありません(#10)。  
+しかし、`pocketmine\item\Bed`や`pocketmine\block\Bed`のような同じ名前のクラスは、混乱を避けるため(以下のリストに載っているものを除き)基本的にインポートされません。
+
+| 優先的にインポートされるクラス                                                |
+|----------------------------------------------------------------|
+| `pocketmine\Server`                                            |
+| `pocketmine\player\GameMode`                                   |
+| `pocketmine\network\mcpe\protocol\serializer\PacketSerializer` |
+| `Ramsey\Uuid\Uuid`                                             |
+| `Ramsey\Uuid\UuidInterface`                                    |
+
+### コードのエラーについて
+EvalBookによって実行されたコードで発生したエラーはキャッチされ、実行者に表示されます。
+ただし、以下のような場合はエラーがキャッチされず、サーバーがクラッシュします。
+- 回復不可能なエラーが発生した時
+- PocketMine-MP によって関数がコールされ、処理された中でエラーが発生した時
+  - イベントリスナー
+  - スケジューラ―
+  - など…
+
+### 回復不可能なエラーについて
+`try-catch` あるいは `set_exception_handler` などの関数でキャッチできないエラーです。
+- 同じ名前のクラスや関数が複数回定義する
+  - クラスや関数を定義するときは**1回だけ**定義するよう気を付けてください。
   - つまり、無名クラスや無名関数を使用することをおすすめします。
-  - すでに定義されたクラスや関数を定義すると、エラーが発生しサーバーが終了します。
-  - `try-catch`あるいは`set_exception_handler`では処理できません。
-- クラスや関数に記述されたコードのエラーはキャッチしていません。~~(出来ない？)~~
-  - イベントリスナーなどでエラーが出た場合はサーバーが終了します。
+- 誤ったクラスやインターフェースの継承(extends)、実装(implements)
+- 同じクラス名のインポートを複数回行う
+- など…
+
+## 特殊な変数・関数について
+### `$_player` などの変数
+コードを実行したプレイヤーがあらかじめ代入されています。以下にリストされる12つの変数が予約されています。
+```php
+$_player, $_PLAYER, $_player_, $_PLAYER_,
+$_executor, $_EXECUTOR, $_executor_, $_EXECUTOR_,
+$_executer, $_EXECUTER, $_executer_, $_EXECUTER_
+```
+
+### 関数: `var_dump_p(Player $player, mixed ...$value) : void`
+`var_dump()` の結果をプレイヤーに送信します。
 
 ## コードの書き方の例
 ```php
-/**
- * 以下の変数はコードを実行したプレイヤーが代入されています
- * $_player, $_PLAYER, $_player_, $_PLAYER_
- * $_executor, $_EXECUTOR, $_executor_, $_EXECUTOR_
- * $_executer, $_EXECUTER, $_executer_, $_EXECUTER_
- */
 // コードを実行したプレイヤーにメッセージを送信します
 $_player->sendMessage("本を実行しました");
-```
 
-### 良い書き方の例
-```php
+// ジャンプしたらtipを送信します
 $listener = new class() implements Listener{
-    function onJump(PlayerJumpEvent $event){
+    public function onJump(PlayerJumpEvent $event) : void{
         $event->getPlayer()->sendTip("ジャンプしたよ");
     }
 };
@@ -58,47 +84,22 @@ $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 
 ### 悪い書き方の例
 ```php
-// クラスを直接定義している、2回実行するとサーバーが落ちる
+// クラスを複数回定義してしまう可能性があります
+// class_exists() 関数を使って1度だけ定義するなどの対策を取りましょう
 class MyEventListener implements Listener{
-    function onChat(PlayerChatEvent $event){
-        // 例外が発生するかもしれないコードをtry-catchで囲んでいない (例が悪い)
-        // (class内のコードは例外がキャッチされず、サーバーがクラッシュする)
-        $player = $this->getServer()->getPlayerByPrefix($event->getChat());
-        $player->sendMessage("呼ばれたよ！");
+    // 例えば、メンションされたプレイヤーを取得したい としましょう
+    public function onChat(PlayerChatEvent $event) : void{
+        /**
+         * 以下に、ミスの例を記載します
+         * IDEやテキストエディタを使用すれば、ある程度のミスは防げますが
+         * try-catch で囲うなどした方が良いでしょう
+         */
+        // getMessage を getMesasge とタイポしています
+        $name = substr($event->getMesasge(), 1);
+        // $this->getServer() という関数は存在しません
+        $target = $this->getServer()->getPlayerByPrefix();
+        // プレイヤーが存在するかどうかチェックしていません
+        $target->sendMessage("メンションされた！");
     }
-}
-
-$this->getServer()->getPluginManager()->registerEvents(new MyEventListener(), $this);
-```
-
-### useを使わなければいけないコード
-#### エラーになるコード
-```php
-use pocketmine\block\Bed;       // エラー！！！
-use pocketmine\block\tile\Bed;  // エラー！！！
-use pocketmine\item\Bed;        // エラー！！！
-```
-
-#### この書き方はOK
-```php
-use pocketmine\block\Bed as BlockBed;
-use pocketmine\block\tile\Bed as TileBed;
-use pocketmine\item\Bed as ItemBed;
-
-if($_player->getWorld()->getBlock($_player->getPosition()) instanceof BlockBed){
-    $_player->sendMessage("足元にベッド(ブロック)があるよ！");
-}
-if($_player->getWorld()->getTile($_player->getPosition()) instanceof TileBed){
-    $_player->sendMessage("足元にベッド(タイル)があるよ！");
-}
-if($_player->getInventory()->getItemInHand() instanceof ItemBed){
-    $_player->sendMessage("ベッド(アイテム)を手に持っているよ！");
-}
-```
-
-#### `use ~ as ~;` の回避策
-```php
-if($_player->getInventory()->getItemInHand() instanceof \pocketmine\item\Bamboo){
-    $_player->sendMessage("竹を手に持っているよ！");
 }
 ```

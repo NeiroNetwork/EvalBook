@@ -6,6 +6,14 @@ namespace NeiroNetwork\EvalBook\codesense;
 
 final class Imports{
 
+	private const PRIORITIZED_IMPORTS = [
+		\pocketmine\Server::class,
+		\pocketmine\player\GameMode::class,
+		\pocketmine\network\mcpe\protocol\serializer\PacketSerializer::class,
+		\Ramsey\Uuid\Uuid::class,
+		\Ramsey\Uuid\UuidInterface::class
+	];
+
 	/** @var string[] */
 	private static array $importClasses = [];
 
@@ -44,8 +52,12 @@ final class Imports{
 			$classesByName[$name][] = $class;
 		}
 
-		// 同じ名前を持つクラスからランダムで一つのクラスを選ぶ
-		self::$importClasses = array_map(fn($classes) => $classes[array_rand($classes)], $classesByName);
+		// 同じ名前が複数存在するクラスはインポートしない
+		$classesByName = array_filter($classesByName, fn($classes) => count($classes) < 2);
+		// 優先して読み込むクラスをねじ込む
+		foreach(self::PRIORITIZED_IMPORTS as $import) $classesByName[][] = $import;
+
+		self::$importClasses = array_map(fn($classes) => $classes[0], $classesByName);
 	}
 
 	/** @return string[] */
