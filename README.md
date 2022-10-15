@@ -40,14 +40,14 @@
 ### コードのエラーについて
 EvalBookによって実行されたコードで発生したエラーはキャッチされ、実行者に表示されます。
 ただし、以下のような場合はエラーがキャッチされず、サーバーがクラッシュします。
-- 回復不可能なエラーが発生した時
+- 致命的なエラー (fatal error) が発生した時
 - PocketMine-MP によって関数がコールされ、処理された中でエラーが発生した時
   - イベントリスナー
   - スケジューラ―
   - など…
 
-### 回復不可能なエラーについて
-`try-catch` あるいは `set_exception_handler` などの関数でキャッチできないエラーです。
+### 致命的なエラー (fatal error) について
+`try-catch` や `set_exception_handler` などの関数でキャッチできないエラーです。
 - 同じ名前のクラスや関数が複数回定義する
   - クラスや関数を定義するときは**1回だけ**定義するよう気を付けてください。
   - つまり、無名クラスや無名関数を使用することをおすすめします。
@@ -78,7 +78,6 @@ $listener = new class() implements Listener{
         $event->getPlayer()->sendTip("ジャンプしたよ");
     }
 };
-
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 ```
 
