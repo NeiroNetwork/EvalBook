@@ -2,23 +2,23 @@ name: build
 
 on:
   push:
-    tags: '*.*.*'
+    tags:
+      - '*'
 
 env:
   OUTPUT_FILE: ${{ github.event.repository.name }}_v${{ github.ref_name }}.phar
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Build plugin
-      run: curl -sL https://raw.githubusercontent.com/pmmp/DevTools/master/src/ConsoleScript.php | php -dphar.readonly=0 -- --make ./ --out $OUTPUT_FILE
+      run: curl -sL https://raw.githubusercontent.com/pmmp/DevTools/1.16.0/src/ConsoleScript.php | php -dphar.readonly=0 -- --make ./ --out $OUTPUT_FILE
 
-    - name: Inject virions
+    - name: Infect virions
       run: php -dphar.readonly=0 -r '
         file_put_contents("virion.php", file_get_contents("https://gist.githubusercontent.com/Nerahikada/a1fbb18c6fe4b2e10bb7baa7de9d0710/raw/virion.php"));
         $data = yaml_parse_file(".poggit.yml") ?:["projects" => [[]]];
@@ -30,6 +30,6 @@ jobs:
 
     - uses: softprops/action-gh-release@v0.1.14
       with:
-        name: Release ${{ github.ref_name }}
+        name: ${{ github.event.repository.name }} ${{ github.ref_name }}
         generate_release_notes: true
         files: ${{ env.OUTPUT_FILE }}
