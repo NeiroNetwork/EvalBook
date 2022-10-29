@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\listener;
 
-use NeiroNetwork\EvalBook\evaler\Evaler;
+use NeiroNetwork\EvalBook\evaluator\Evaluator;
 use NeiroNetwork\EvalBook\item\ExecutableBook;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\event\Listener;

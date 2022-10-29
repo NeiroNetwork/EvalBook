@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\EvalBook\evaler;
+namespace NeiroNetwork\EvalBook\evaluator;
 
 use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\Main;
@@ -11,7 +11,7 @@ use pocketmine\errorhandler\ErrorTypeToStringMap;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\TextFormat;
 
-final class Evaler{
+final class Evaluator{
 
 	public static function promote(string $code, CommandSender $executor = null) : void{
 		var_dump($code);	// TODO: log ran scripts
