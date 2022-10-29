@@ -52,7 +52,7 @@ class BookEventListener implements Listener{
 		){
 			$event->cancel();
 			/** @var WritableBookBase $item */
-			Evaler::promote(ExecutableBook::getCode($item), $player);
+			Evaluator::promote(ExecutableBook::getCode($item), $player);
 		}
 	}
 }
