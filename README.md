@@ -96,7 +96,7 @@ class MyEventListener implements Listener{
         // getMessage を getMesasge とタイポしています
         $name = substr($event->getMesasge(), 1);
         // $this->getServer() という関数は存在しません
-        $target = $this->getServer()->getPlayerByPrefix();
+        $target = $this->getServer()->getPlayerByPrefix($name);
         // プレイヤーが存在するかどうかチェックしていません
         $target->sendMessage("メンションされた！");
     }
