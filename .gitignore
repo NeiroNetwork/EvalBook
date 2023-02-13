@@ -3,8 +3,8 @@
 # IDEs
 .idea/
 nbproject/
-.vscode/**
-!.vscode/settings.json
+.vscode/
+.editorconfig
 
 # Windows
 Thumbs.db
