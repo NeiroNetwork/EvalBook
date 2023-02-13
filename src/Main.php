@@ -14,6 +14,7 @@ use NeiroNetwork\EvalBook\listener\PermissionGranter;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\plugin\PluginBase;
 
+#[\AllowDynamicProperties]
 class Main extends PluginBase{
 
 	private static self $instance;
