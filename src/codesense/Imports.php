@@ -32,7 +32,7 @@ final class Imports{
 			self::listPhpFiles(\pocketmine\PATH . "vendor/pocketmine"),
 			self::listPhpFiles(\pocketmine\PATH . "vendor/ramsey"),
 			self::listPhpFiles(\pocketmine\PATH . "vendor/symfony"),
-			self::listPhpFiles(\pocketmine\PATH . "vendor/webmozart"),
+			self::listPhpFiles(\pocketmine\PATH . "vendor/webmozart"),//PM4
 		);
 
 		$definedClasses = [];
@@ -62,6 +62,7 @@ final class Imports{
 
 	/** @return string[] */
 	private static function listPhpFiles(string $search) : array{
+		if(!file_exists($search)) return [];
 		$iterator = new \RecursiveDirectoryIterator($search, \FilesystemIterator::SKIP_DOTS);
 		$iterator = new \CallbackFilterIterator(
 			new \RecursiveIteratorIterator($iterator),

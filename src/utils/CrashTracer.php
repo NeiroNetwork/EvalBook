@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\utils;
 
 use NeiroNetwork\EvalBook\Main;
-use Webmozart\PathUtil\Path;
 
 final class CrashTracer{
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use NeiroNetwork\EvalBook\utils\Path;
 use pocketmine\utils\Config;
-use Webmozart\PathUtil\Path;
 
 final class OperatorsStore{
 
