@@ -15,18 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build plugin
-      run: curl -sL https://raw.githubusercontent.com/pmmp/DevTools/1.16.0/src/ConsoleScript.php | php -dphar.readonly=0 -- --make ./ --out $OUTPUT_FILE
-
-    - name: Infect virions
-      run: php -dphar.readonly=0 -r '
-        file_put_contents("virion.php", file_get_contents("https://gist.githubusercontent.com/Nerahikada/a1fbb18c6fe4b2e10bb7baa7de9d0710/raw/virion.php"));
-        $data = yaml_parse_file(".poggit.yml") ?:["projects" => [[]]];
-        foreach(reset($data["projects"])["libs"] ?? [] as $lib){
-          file_put_contents("virion.phar", file_get_contents("https://poggit.pmmp.io/v.dl/{$lib["src"]}/" . ($lib["version"] ?? "*")));
-          (new Phar("virion.phar"))->addFile("virion.php", "virion.php");
-          system("php -dphar.readonly=0 virion.phar ${{ env.OUTPUT_FILE }}");
-        }'
+    - name: Build plugin and infect virions
+      run: |
+        curl -sL https://raw.githubusercontent.com/pmmp/DevTools/1.16.0/src/ConsoleScript.php | php -dphar.readonly=0 -- --make ./ --out $OUTPUT_FILE
+        curl -sL https://gist.githubusercontent.com/Nerahikada/a1fbb18c6fe4b2e10bb7baa7de9d0710/raw/infector.php | php -dphar.readonly=0 -- $OUTPUT_FILE
 
     - uses: softprops/action-gh-release@v0.1.14
       with:
