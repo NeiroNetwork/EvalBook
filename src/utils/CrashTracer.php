@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\utils;
 
 use NeiroNetwork\EvalBook\Main;
+use Symfony\Component\Filesystem\Path;
 
 final class CrashTracer{
 

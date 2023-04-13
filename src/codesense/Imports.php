@@ -32,7 +32,6 @@ final class Imports{
 			self::listPhpFiles(\pocketmine\PATH . "vendor/pocketmine"),
 			self::listPhpFiles(\pocketmine\PATH . "vendor/ramsey"),
 			self::listPhpFiles(\pocketmine\PATH . "vendor/symfony"),
-			self::listPhpFiles(\pocketmine\PATH . "vendor/webmozart"),//PM4
 		);
 
 		$definedClasses = [];
