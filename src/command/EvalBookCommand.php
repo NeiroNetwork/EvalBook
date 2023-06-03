@@ -26,4 +26,9 @@ class EvalBookCommand extends BaseCommand{
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
 		$this->sendUsage();
 	}
+
+	// TODO: REMOVE THIS 💩
+	public function getPermission(){
+		return [EvalBookPermissionNames::COMMAND];
+	}
 }
