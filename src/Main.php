@@ -38,7 +38,7 @@ class Main extends PluginBase{
 		OperatorsStore::load($this->getDataFolder());
 
 		if(!PacketHooker::isRegistered()) PacketHooker::register($this);
-		$commandClass = "NeiroNetwork\EvalBook\command\EvalBookCommandPm" . VersionInfo::VERSION()->getMinor();
+		$commandClass = "NeiroNetwork\EvalBook\command\EvalBookCommandPm" . VersionInfo::VERSION()->getMajor();
 		$this->getServer()->getCommandMap()->register($this->getName(), new $commandClass($this, "evalbook", "EvalBook commands"));
 
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this->getScheduler()), $this);
