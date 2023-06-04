@@ -12,7 +12,7 @@ use NeiroNetwork\EvalBook\command\sub\ReloadCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use pocketmine\command\CommandSender;
 
-class EvalBookCommand extends BaseCommand{
+class EvalBookCommandPm4 extends BaseCommand{
 
 	protected function prepare() : void{
 		$this->setPermission(EvalBookPermissionNames::COMMAND);
@@ -25,10 +25,5 @@ class EvalBookCommand extends BaseCommand{
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
 		$this->sendUsage();
-	}
-
-	// TODO: REMOVE THIS 💩
-	public function getPermission(){
-		return [EvalBookPermissionNames::COMMAND];
 	}
 }

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook;
 
 use CortexPE\Commando\PacketHooker;
-use NeiroNetwork\EvalBook\command\EvalBookCommand;
+use NeiroNetwork\EvalBook\command\EvalBookCommandPm4;
+use NeiroNetwork\EvalBook\command\EvalBookCommandPm5;
 use NeiroNetwork\EvalBook\utils\CrashReportDisabler;
 use NeiroNetwork\EvalBook\utils\CrashTracer;
 use NeiroNetwork\EvalBook\listener\BookEventListener;
@@ -13,6 +14,7 @@ use NeiroNetwork\EvalBook\listener\CrashErrorNotifier;
 use NeiroNetwork\EvalBook\listener\PermissionGranter;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\plugin\PluginBase;
+use pocketmine\VersionInfo;
 
 #[\AllowDynamicProperties]
 class Main extends PluginBase{
@@ -36,7 +38,8 @@ class Main extends PluginBase{
 		OperatorsStore::load($this->getDataFolder());
 
 		if(!PacketHooker::isRegistered()) PacketHooker::register($this);
-		$this->getServer()->getCommandMap()->register($this->getName(), new EvalBookCommand($this, "evalbook", "EvalBook commands"));
+		$commandClass = "NeiroNetwork\EvalBook\command\EvalBookCommandPm" . VersionInfo::VERSION()->getMinor();
+		$this->getServer()->getCommandMap()->register($this->getName(), new $commandClass($this, "evalbook", "EvalBook commands"));
 
 		$this->getServer()->getPluginManager()->registerEvents(new CrashErrorNotifier($this->getScheduler()), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PermissionGranter(), $this);
