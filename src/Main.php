@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook;
 
 use CortexPE\Commando\PacketHooker;
-use NeiroNetwork\EvalBook\command\EvalBookCommandPm4;
-use NeiroNetwork\EvalBook\command\EvalBookCommandPm5;
 use NeiroNetwork\EvalBook\utils\CrashReportDisabler;
 use NeiroNetwork\EvalBook\utils\CrashTracer;
 use NeiroNetwork\EvalBook\listener\BookEventListener;
