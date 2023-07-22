@@ -18,6 +18,7 @@ class PermCommand extends BaseSubCommand{
 		$this->registerArgument(0, new class("permission") extends StringEnumArgument{
 			protected const VALUES = ["default" => "default", "op" => "op", "everyone" => "everyone"];
 			public function getTypeName() : string{ return "string"; }
+			public function getEnumName() : string{ return "permission"; }
 			public function parse(string $argument, CommandSender $sender) : mixed{ return $this->getValue($argument); }
 		});
 	}
