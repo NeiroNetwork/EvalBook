@@ -12,15 +12,20 @@ use NeiroNetwork\EvalBook\command\sub\ReloadCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use pocketmine\command\CommandSender;
 
-class EvalBookCommandPm5 extends BaseCommand{
+class EvalBookCommand extends BaseCommand{
 
 	protected function prepare() : void{
 		$this->setPermission(EvalBookPermissionNames::COMMAND);
 
-		$this->registerSubCommand(new ReloadCommand("reload", "Reload permitted operators configuration file"));
-		$this->registerSubCommand(new NewCommand("new", "Get a new eval book", ["get", "give"]));
-		$this->registerSubCommand(new PermCommand("perm", "Set the book's execution permission", ["permission"]));
-		$this->registerSubCommand(new CustomNameCommand("customname", "Rename the book", ["name"]));
+		$subCommands = [
+			new ReloadCommand($this->plugin, "reload", "Reload permitted operators configuration file"),
+			new NewCommand($this->plugin, "new", "Get a new eval book", ["get", "give"]),
+			new PermCommand($this->plugin, "perm", "Set the book's execution permission", ["permission"]),
+			new CustomNameCommand($this->plugin, "customname", "Rename the book", ["name"]),
+		];
+		foreach($subCommands as $subCommand){
+			$this->registerSubCommand($subCommand);
+		}
 	}
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
