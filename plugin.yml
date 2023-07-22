@@ -1,5 +1,5 @@
 name: EvalBook
-version: 0.2.1
+version: 0.2.2
 main: NeiroNetwork\EvalBook\Main
 api: 5.3.0
 src-namespace-prefix: NeiroNetwork\EvalBook
