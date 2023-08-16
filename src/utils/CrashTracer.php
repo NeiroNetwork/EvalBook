@@ -38,10 +38,10 @@ final class CrashTracer{
 
 	/**
 	 * @param array{
-	 *     type: Throwable,
+	 *     type: string,
 	 *     message: string,
-	 *     fullFile: mixed,
-	 *     file: mixed,
+	 *     fullFile: string,
+	 *     file: string,
 	 *     line: int,
 	 *     trace: mixed[]
 	 * } $error
