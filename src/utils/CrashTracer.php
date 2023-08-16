@@ -44,8 +44,6 @@ final class CrashTracer{
 	 *     line: int,
 	 *     trace: ThreadCrashInfoFrame[]
 	 * } $error
-	 *
-	 * @return bool
 	 */
 	private static function causedByPlugin(array $error) : bool{
 		if(self::isEvaldFile($error["fullFile"])) return true;
