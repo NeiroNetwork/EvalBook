@@ -7,7 +7,6 @@ namespace NeiroNetwork\EvalBook\utils;
 use NeiroNetwork\EvalBook\Main;
 use pocketmine\thread\ThreadCrashInfoFrame;
 use Symfony\Component\Filesystem\Path;
-use Throwable;
 
 final class CrashTracer{
 
@@ -43,7 +42,7 @@ final class CrashTracer{
 	 *     fullFile: string,
 	 *     file: string,
 	 *     line: int,
-	 *     trace: mixed[]
+	 *     trace: ThreadCrashInfoFrame[]
 	 * } $error
 	 *
 	 * @return bool
@@ -52,13 +51,7 @@ final class CrashTracer{
 		if(self::isEvaldFile($error["fullFile"])) return true;
 
 		foreach($error["trace"] as $trace){
-			if ($trace instanceof ThreadCrashInfoFrame){
-				$traceFile = $trace->getFile() ?? "";
-			} else {
-				$traceFile = $trace["file"] ?? "";
-			}
-
-			if(self::isEvaldFile($traceFile)){
+			if(self::isEvaldFile($trace->getFile() ?? "")){
 				return true;
 			}
 		}
