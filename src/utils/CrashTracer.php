@@ -42,7 +42,8 @@ final class CrashTracer{
 	 *     fullFile: string,
 	 *     file: string,
 	 *     line: int,
-	 *     trace: ThreadCrashInfoFrame[]
+	 *     trace: ThreadCrashInfoFrame[],
+	 *     thread: string
 	 * } $error
 	 */
 	private static function causedByPlugin(array $error) : bool{
