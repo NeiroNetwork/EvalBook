@@ -1,27 +1,24 @@
 # EvalBook
 本に書いたコードを実行するプラグイン
 
-## コードの実行
-スニークしながら専用の本をドロップすることでコードを実行します  
-コードの実行には本に表示されている権限が必要です
+## 権限について
+コマンドの実行や EvalBook に書かれたコードの実行には専用の権限が必要です。  
+`plugin_data/EvalBook/allowlist.txt` に名前を書くことで自動的に権限が付与されます。  
+ファイルをリロードするには `/evalbook reload` を実行してください。
 
 ## コマンド
-コマンドの実行には `evalbook.group.operator` 権限が必要です
 
-| コマンド | 説明 | エイリアス |
-| --- | --- | --- |
-| `/evalbook new` | EvalBookを手に入れます | `get` `give` |
-| `/evalbook perm <default/op/everyone>` | EvalBookの実行権限を変更します | `permission` |
-| `/evalbook reload` | 設定ファイルを再読み込みします |  |
-| `/evalbook customname <any string>` | EvalBookのアイテムの名前を変更します | `name` |
+| コマンド                                   | 説明                         | エイリアス        |
+|----------------------------------------|----------------------------|--------------|
+| `/evalbook get`                        | EvalBookを手に入れます            | `new`        |
+| `/evalbook give [player]`              | 指定したプレイヤーにEvalBookを与えます    |              |
+| `/evalbook perm <default/op/everyone>` | 手持ちのEvalBookの実行権限を変更します    | `permission` |
+| `/evalbook reload`                     | `allowlist.txt` を再読み込みします  |              |
+| `/evalbook name <any string>`          | 手持ちのEvalBookのアイテムの名前を変更します | `customname` |
 
-## 権限
-| 権限 | 本の表示 | 説明 |
-| --- | --- | --- |
-| `evalbook.group.operator` |  | `allowlist.txt` に記載されたプレイヤーに付与されます |
-| `evalbook.exec.default` | `default` | `evalbook.group.operator` の権限がある場合はコードを実行できます |
-| `evalbook.exec.op` | `op` | OPである場合のみコードを実行できます |
-| `evalbook.exec.everyone` | `everyone` | 全員がコードを実行できます |
+## コードの実行方法
+スニークしながら EvalBook と呼ばれる専用の本をドロップすることでコードを実行します。  
+コードの実行には本に表示されている権限 (デフォルトは `evalbook.group.operator`) が必要です。
 
 ## コードの書き方
 ### クラスのインポート (use文) について
