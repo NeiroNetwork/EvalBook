@@ -2,4 +2,4 @@ projects:
   EvalBook:
     libs:
       - src: Paroxity/Commando/Commando
-        version: ^3.1.0
+        version: ^3.2.0
