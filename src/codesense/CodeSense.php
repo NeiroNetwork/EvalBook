@@ -16,13 +16,13 @@ final class CodeSense{
 	}
 
 	private static function injectImports(string &$code) : void{
-		$importString = "";
-		foreach(Imports::get() as $class){
-			if(!str_contains($code, $class)){
-				$importString .= "use $class;";
-			}
+		$baseImports = ImportablePmClasses::getInstance()->getImportableClasses();
+		$userImports = UseStatementParser::parse("<?php $code");
+		foreach($userImports as $name => $_){
+			unset($baseImports[$name]);
 		}
 
+		$importString = implode("", array_map(fn(string $class) => "use $class;", $baseImports));
 		$code = $importString . $code;
 	}
 
