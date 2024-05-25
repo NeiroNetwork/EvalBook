@@ -9,7 +9,7 @@ use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 
-class PermissionStringEnumArgument extends StringEnumArgument{
+final class PermissionStringEnumArgument extends StringEnumArgument{
 
 	protected const VALUES = [
 		"default" => EvalBookPermissions::ROOT_OPERATOR,

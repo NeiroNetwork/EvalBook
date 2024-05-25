@@ -10,7 +10,7 @@ use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Human;
 
-class ChangeBookNameCommand extends BaseSubCommand{
+final class ChangeBookNameCommand extends BaseSubCommand{
 	use BookRequiredCommandTrait;
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{

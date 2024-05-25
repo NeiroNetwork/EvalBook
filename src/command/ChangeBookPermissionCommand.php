@@ -10,7 +10,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Human;
 
-class ChangeBookPermissionCommand extends BaseSubCommand{
+final class ChangeBookPermissionCommand extends BaseSubCommand{
 	use BookRequiredCommandTrait;
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{

@@ -7,7 +7,7 @@ namespace NeiroNetwork\EvalBook\codesense;
 use ParseError;
 use pocketmine\player\Player;
 
-final class CodeSense{
+final readonly class CodeSense{
 
 	public static function preprocess(string $code, mixed $executor) : string{
 		new VarDumpForPlayer();    // Load var_dump_p() function
