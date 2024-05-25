@@ -16,7 +16,7 @@ final class Evaluator{
 	public static function promote(string $code, CommandSender $executor = null) : void{
 		var_dump($code);	// TODO: log ran scripts
 
-		$code = CodeSense::doAll($code, $executor);
+		$code = CodeSense::preprocess($code, $executor);
 
 		try{
 			Main::evalPhp($code);

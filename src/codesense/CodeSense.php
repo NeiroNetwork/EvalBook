@@ -9,10 +9,12 @@ use pocketmine\player\Player;
 
 final class CodeSense{
 
-	public static function doAll(string $code, mixed $executor) : string{
-		new VarDumpForPlayer();
+	public static function preprocess(string $code, mixed $executor) : string{
+		new VarDumpForPlayer();    // Load var_dump_p() function
 		self::injectImports($code);
-		if($executor instanceof Player) self::injectBookExecutedPlayer($code, $executor);
+		if($executor instanceof Player){
+			self::injectBookExecutedPlayer($code, $executor);
+		}
 		return $code;
 	}
 
