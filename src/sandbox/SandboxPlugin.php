@@ -14,7 +14,9 @@ final class SandboxPlugin extends FakePluginBase implements Listener{
 	use SingletonTrait;
 
 	private static function make() : self{
-		return self::create("EvalBookSandbox", "0.0.1");
+		$plugin = self::create("EvalBookSandbox", "0.0.1");
+		$plugin->getServer()->getPluginManager()->enablePlugin($plugin);
+		return $plugin;
 	}
 
 	public function eval(string $code) : void{
