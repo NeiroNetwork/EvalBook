@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
-use pocketmine\Server;
+use NeiroNetwork\EvalBook\Main as EvalBook;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
 use Symfony\Component\Filesystem\Path;
@@ -12,11 +12,10 @@ use Symfony\Component\Filesystem\Path;
 final class EvalBookOperators{
 	use SingletonTrait;
 
-	private Config $operators;
+	private readonly Config $operators;
 
 	public function __construct(){
-		$dataFolder = Server::getInstance()->getPluginManager()->getPlugin("EvalBook")->getDataFolder();    // FIXME
-		$this->operators = new Config(Path::join($dataFolder, "allowlist.txt"), Config::ENUM);
+		$this->operators = new Config(Path::join(EvalBook::getDataFolderPath(), "allowlist.txt"), Config::ENUM);
 	}
 
 	public function reload() : void{
