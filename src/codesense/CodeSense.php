@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\codesense;
 
+use ParseError;
 use pocketmine\player\Player;
 
 final class CodeSense{
@@ -17,7 +18,12 @@ final class CodeSense{
 
 	private static function injectImports(string &$code) : void{
 		$baseImports = ImportablePmClasses::getInstance()->getImportableClasses();
-		$userImports = UseStatementParser::parse("<?php $code");
+		try{
+			$userImports = UseStatementParser::parse("<?php $code");
+		}catch(ParseError){
+			return;
+		}
+
 		foreach($userImports as $name => $_){
 			unset($baseImports[$name]);
 		}
