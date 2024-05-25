@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
-use NeiroNetwork\EvalBook\evaluator\Evaluator;
+use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\item\EvalBookEnchantment;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
+use NeiroNetwork\EvalBook\sandbox\SandboxPlugin;
 use pocketmine\command\CommandSender;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
@@ -17,6 +18,9 @@ use pocketmine\item\WritableBookPage;
 use pocketmine\item\WrittenBook;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
+use pocketmine\utils\TextFormat;
+use pocketmine\utils\Utils;
+use Throwable;
 
 final readonly class LibEvalBook{
 
@@ -61,12 +65,33 @@ final readonly class LibEvalBook{
 		return $book;
 	}
 
-	public static function executeBook(WritableBookBase $book, CommandSender $executor) : void{
+	public static function executeBook(WritableBookBase $book, ?CommandSender $executor = null) : void{
 		$pages = array_map(fn(WritableBookPage $page) : string => $page->getText(), $book->getPages());
 		$pages = array_filter($pages, fn(string $text) : bool => trim($text) !== "");
 		$code = implode(PHP_EOL, $pages);
 
-		// TODO
-		Evaluator::promote($code, $executor);
+		var_dump($code);    // TODO: log ran scripts
+
+		$code = CodeSense::preprocess($code, $executor);
+
+		try{
+			SandboxPlugin::getInstance()->eval($code);
+		}catch(Throwable $exception){
+			/**
+			 * メモ: fatal error はどうあがいてもキャッチできない
+			 * 例えば、クラスの間違った継承、同じ名前の関数やクラスを2回以上定義したり…
+			 */
+
+			$traces = [];
+			foreach($exception->getTrace() as $trace){
+				$traces[] = $trace;
+				if($trace["class"] ?? null === SandboxPlugin::class && $trace["function"] === "eval"){
+					break;
+				}
+			}
+
+			$message = implode("\n", Utils::printableExceptionInfo($exception, $traces));
+			$executor?->sendMessage(TextFormat::RED . $message);
+		}
 	}
 }

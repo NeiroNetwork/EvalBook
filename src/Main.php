@@ -13,18 +13,9 @@ use NeiroNetwork\EvalBook\listener\PermissionGranter;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use pocketmine\plugin\PluginBase;
 
-#[\AllowDynamicProperties]
 final class Main extends PluginBase{
 
-	private static self $instance;
-
-	public static function evalPhp(string $code) : void{ self::$instance->evalInternal($code); }
-
-	private function evalInternal(string $code) : void{ eval($code); }
-
 	protected function onLoad() : void{
-		self::$instance = $this;	// TODO: remove this
-
 		ServerCrashTracer::disableAutoReporting();
 		EvalBookPermissions::registerCorePermissions();
 	}
