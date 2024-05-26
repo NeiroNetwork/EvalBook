@@ -15,7 +15,7 @@ final class EvalBookOperators{
 	private readonly Config $operators;
 
 	public function __construct(){
-		$this->operators = new Config(Path::join(EvalBook::getDataFolderPath(), "allowlist.txt"), Config::ENUM);
+		$this->operators = new Config(Path::join(EvalBook::getPlugin()->getDataFolder(), "allowlist.txt"), Config::ENUM);
 	}
 
 	public function reload() : void{

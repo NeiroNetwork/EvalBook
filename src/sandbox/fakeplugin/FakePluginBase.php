@@ -16,7 +16,7 @@ abstract class FakePluginBase extends PluginBase{
 		return new static(new FakePluginLoader(),
 			Server::getInstance(),
 			new PluginDescription(["name" => $name, "version" => $version, "main" => static::class, "api" => ["5.0.0"]]),
-			Path::join(EvalBook::getDataFolderPath(), "sandbox"),
+			Path::join(EvalBook::getPlugin()->getDataFolder(), "sandbox"),
 			uniqid("plugin_", true),
 			new FakeResourceProvider());
 	}

@@ -15,14 +15,14 @@ use pocketmine\plugin\PluginBase;
 
 final class Main extends PluginBase{
 
-	private static string $dataFolder;
+	public static Main $instance;
 
-	public static function getDataFolderPath() : string{
-		return self::$dataFolder;
+	public static function getPlugin() : Main{
+		return self::$instance;
 	}
 
 	protected function onLoad() : void{
-		self::$dataFolder = $this->getDataFolder();
+		self::$instance = $this;
 		ServerCrashTracer::disableAutoReporting();
 		EvalBookPermissions::registerCorePermissions();
 	}
