@@ -6,6 +6,7 @@ namespace NeiroNetwork\EvalBook;
 
 use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\item\EvalBookEnchantment;
+use NeiroNetwork\EvalBook\Main as EvalBook;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use NeiroNetwork\EvalBook\sandbox\SandboxPlugin;
 use pocketmine\command\CommandSender;
@@ -21,7 +22,6 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Utils;
 use Throwable;
-use NeiroNetwork\EvalBook\Main as EvalBook;
 
 final readonly class LibEvalBook{
 
