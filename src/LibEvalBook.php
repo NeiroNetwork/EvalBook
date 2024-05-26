@@ -21,6 +21,7 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Utils;
 use Throwable;
+use NeiroNetwork\EvalBook\Main as EvalBook;
 
 final readonly class LibEvalBook{
 
@@ -70,7 +71,7 @@ final readonly class LibEvalBook{
 		$pages = array_filter($pages, fn(string $text) : bool => trim($text) !== "");
 		$code = implode(PHP_EOL, $pages);
 
-		var_dump($code);    // TODO: log ran scripts
+		EvalBook::getPlugin()->getLogger()->info(($executor ? "{$executor->getName()} " : "") . "eval()'d: " . base64_encode($code) . " (" . md5($code) . ")");
 
 		$code = CodeSense::preprocess($code, $executor);
 
