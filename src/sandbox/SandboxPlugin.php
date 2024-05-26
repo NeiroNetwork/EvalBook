@@ -19,7 +19,25 @@ final class SandboxPlugin extends FakePluginBase implements Listener{
 		return $plugin;
 	}
 
-	public function eval(string $code) : void{
+	public function eval(string $code, bool $flushOutput = true) : string{
+		if($flushOutput){
+			$output = "";
+			ob_start(function(string $buffer) use (&$output){
+				$output .= $buffer;
+				return $buffer;
+			}, 1);
+		}else{
+			ob_start();
+		}
+
 		eval($code);
+
+		if($flushOutput){
+			ob_end_flush();
+		}else{
+			$output = ob_get_clean();
+		}
+
+		return $output;
 	}
 }

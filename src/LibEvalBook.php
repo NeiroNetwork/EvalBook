@@ -76,7 +76,12 @@ final readonly class LibEvalBook{
 		$code = CodeSense::preprocess($code, $executor);
 
 		try{
-			SandboxPlugin::getInstance()->eval($code);
+			$output = SandboxPlugin::getInstance()->eval($code);
+			/** @see TextFormat::clean() */
+			$output = str_replace("\x1b", "", preg_replace("/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/u", "", mb_scrub($output, 'UTF-8')));
+			if($output !== ""){
+				$executor?->sendMessage($output);
+			}
 		}catch(Throwable $exception){
 			/**
 			 * メモ: fatal error はどうあがいてもキャッチできない
