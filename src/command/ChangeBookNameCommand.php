@@ -13,16 +13,16 @@ use pocketmine\entity\Human;
 final class ChangeBookNameCommand extends BaseSubCommand{
 	use BookRequiredCommandTrait;
 
+	protected function prepare() : void{
+		$this->setPermission(EvalBookPermissionNames::COMMAND_NAME);
+		$this->registerArgument(0, new TextArgument("name"));
+	}
+
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
 		if(!is_null($book = $this->getBookInHand($sender))){
 			assert($sender instanceof Human);
 			$sender->getInventory()->setItemInHand($book->setCustomName($args["name"]));
 			$sender->sendMessage("Custom name of the book has been changed.");
 		}
-	}
-
-	protected function prepare() : void{
-		$this->setPermission(EvalBookPermissionNames::COMMAND_NAME);
-		$this->registerArgument(0, new TextArgument("name"));
 	}
 }

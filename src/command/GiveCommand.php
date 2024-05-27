@@ -13,6 +13,11 @@ use pocketmine\inventory\InventoryHolder;
 
 final class GiveCommand extends BaseSubCommand{
 
+	protected function prepare() : void{
+		$this->setPermission(EvalBookPermissionNames::COMMAND_GIVE);
+		$this->registerArgument(0, new TargetPlayerArgument(true));
+	}
+
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
 		$target = match($args["player"] ?? null){
 			null, "@s", "@p" => $sender,
@@ -26,10 +31,5 @@ final class GiveCommand extends BaseSubCommand{
 		if($target instanceof InventoryHolder && $target->getInventory()->canAddItem($book)){
 			$target->getInventory()->addItem($book);
 		}
-	}
-
-	protected function prepare() : void{
-		$this->setPermission(EvalBookPermissionNames::COMMAND_GIVE);
-		$this->registerArgument(0, new TargetPlayerArgument(true));
 	}
 }

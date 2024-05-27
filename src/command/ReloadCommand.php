@@ -13,6 +13,10 @@ use pocketmine\command\CommandSender;
 
 final class ReloadCommand extends BaseSubCommand{
 
+	protected function prepare() : void{
+		$this->setPermission(EvalBookPermissionNames::COMMAND_RELOAD);
+	}
+
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
 		$server = $sender->getServer();
 
@@ -27,9 +31,5 @@ final class ReloadCommand extends BaseSubCommand{
 		}
 
 		Command::broadcastCommandMessage($sender, "Configuration file has been reloaded.");
-	}
-
-	protected function prepare() : void{
-		$this->setPermission(EvalBookPermissionNames::COMMAND_RELOAD);
 	}
 }

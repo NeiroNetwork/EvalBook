@@ -13,6 +13,11 @@ use pocketmine\entity\Human;
 final class ChangeBookPermissionCommand extends BaseSubCommand{
 	use BookRequiredCommandTrait;
 
+	protected function prepare() : void{
+		$this->setPermission(EvalBookPermissionNames::COMMAND_PERM);
+		$this->registerArgument(0, new PermissionStringEnumArgument("permission"));
+	}
+
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
 		if(!is_null($book = $this->getBookInHand($sender))){
 			assert($sender instanceof Human);
@@ -21,10 +26,5 @@ final class ChangeBookPermissionCommand extends BaseSubCommand{
 			$sender->getInventory()->setItemInHand($book->setLore($lore));
 			Command::broadcastCommandMessage($sender, "Execute permission has been successfully changed to \"$perm\".");
 		}
-	}
-
-	protected function prepare() : void{
-		$this->setPermission(EvalBookPermissionNames::COMMAND_PERM);
-		$this->registerArgument(0, new PermissionStringEnumArgument("permission"));
 	}
 }

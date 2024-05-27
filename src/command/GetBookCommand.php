@@ -12,14 +12,14 @@ use pocketmine\inventory\InventoryHolder;
 
 final class GetBookCommand extends BaseSubCommand{
 
+	protected function prepare() : void{
+		$this->setPermission(EvalBookPermissionNames::COMMAND_GET);
+	}
+
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
 		$book = LibEvalBook::createEmptyBook();
 		if($sender instanceof InventoryHolder && $sender->getInventory()->canAddItem($book)){
 			$sender->getInventory()->addItem($book);
 		}
-	}
-
-	protected function prepare() : void{
-		$this->setPermission(EvalBookPermissionNames::COMMAND_GET);
 	}
 }

@@ -15,10 +15,6 @@ final class EvalBookCommand extends BaseCommand{
 		return new self($plugin, "evalbook", "EvalBook commands");
 	}
 
-	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
-		$this->sendUsage();
-	}
-
 	protected function prepare() : void{
 		$this->setPermission(EvalBookPermissionNames::COMMAND);
 
@@ -33,5 +29,9 @@ final class EvalBookCommand extends BaseCommand{
 		foreach($subCommands as $subCommand){
 			$this->registerSubCommand($subCommand);
 		}
+	}
+
+	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
+		$this->sendUsage();
 	}
 }
