@@ -84,12 +84,12 @@ final readonly class CodeSense{
 	}
 
 	private static function generatePlayerVariables(Player $player) : string{
-		$list = [];
+		$variables = [];
 		foreach(["player", "executor", "executer"] as $str){
 			$STR = strtoupper($str);
-			array_push($list, "\$_$str", "\$_{$str}_", "\$_$STR", "\$_{$STR}_");
+			array_push($variables, "\$_$str", "\$_{$str}_", "\$_$STR", "\$_{$STR}_");
 		}
 
-		return implode("=", $list) . "=\pocketmine\Server::getInstance()->getPlayerExact('{$player->getName()}');";
+		return implode("=", $variables) . "=\pocketmine\Server::getInstance()->getPlayerExact('{$player->getName()}');";
 	}
 }
