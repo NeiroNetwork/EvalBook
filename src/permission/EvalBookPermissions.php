@@ -23,5 +23,6 @@ final readonly class EvalBookPermissions{
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_NAME), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_GET), [$operator]);
 		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_GIVE), [$operator, $console]);
+		DefaultPermissions::registerPermission(new Permission(EvalBookPermissionNames::COMMAND_EDIT), [$operator]);
 	}
 }

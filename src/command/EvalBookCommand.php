@@ -28,6 +28,7 @@ final class EvalBookCommand extends BaseCommand{
 			new ChangeBookNameCommand($this->plugin, "name", "Rename the book", ["customname"]),
 			new GetBookCommand($this->plugin, "get", "Get a new eval book", ["new"]),
 			new GiveCommand($this->plugin, "give", "Give an empty eval book to a player"),
+			new RevertBookSignatureCommand($this->plugin, "edit", "Revert a signed EvalBook to a writable book", ["revert"]),
 		];
 		foreach($subCommands as $subCommand){
 			$this->registerSubCommand($subCommand);

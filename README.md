@@ -15,6 +15,7 @@ Minecraftゲーム内でコードを本に書いて実行できるプラグイ�
 | `/evalbook perm <default/op/everyone>` | 手持ちのEvalBookの実行権限を変更します    | `permission` |
 | `/evalbook reload`                     | `allowlist.txt` を再読み込みします  |              |
 | `/evalbook name <any string>`          | 手持ちのEvalBookのアイテムの名前を変更します | `customname` |
+| `/evalbook edit`                       | 手持ちの署名されたEvalBookを元に戻します   | `revert`     |
 
 ## コードの実行方法
 スニークしながら EvalBook と呼ばれる専用の本をドロップすることでコードを実行します。  

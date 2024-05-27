@@ -14,6 +14,7 @@ final readonly class EvalBookPermissionNames{
 	public const COMMAND_NAME = "evalbook.command.name";
 	public const COMMAND_GET = "evalbook.command.get";
 	public const COMMAND_GIVE = "evalbook.command.give";
+	public const COMMAND_EDIT = "evalbook.command.edit";
 
 	public const BYPASS_BOOK_SOFT_LIMIT = "evalbook.bypass.book_soft_limit";
 }
