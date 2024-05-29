@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\codesense;
 
 use Generator;
+use ParseError;
 use PhpToken;
 
 final readonly class UseStatementParser{
 
 	/**
 	 * @return array<string, string>
+	 * @throws ParseError
 	 */
 	public static function parse(string $code) : array{
 		$tokens = PhpToken::tokenize($code, TOKEN_PARSE);
