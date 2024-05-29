@@ -16,7 +16,7 @@ final readonly class CodeSense{
 		new VarDumpForPlayer();    // Load var_dump_p() function
 
 		try{
-			$blockByNamespace = self::splitByNamespace($code);
+			$blockByNamespace = iterator_to_array(self::splitByNamespace($code));
 		}catch(ParseError){
 			return $code;
 		}
