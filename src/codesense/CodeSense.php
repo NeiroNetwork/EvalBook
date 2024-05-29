@@ -15,8 +15,14 @@ final readonly class CodeSense{
 	public static function preprocess(string $code, ?CommandSender $executor = null) : string{
 		new VarDumpForPlayer();    // Load var_dump_p() function
 
+		try{
+			$blockByNamespace = self::splitByNamespace($code);
+		}catch(ParseError){
+			return $code;
+		}
+
 		$result = "";
-		foreach(self::splitByNamespace($code) as $splitCodes){
+		foreach($blockByNamespace as $splitCodes){
 			if(count($splitCodes) <= 1){
 				array_unshift($splitCodes, "");
 			}
@@ -28,14 +34,16 @@ final readonly class CodeSense{
 
 			$result .= $splitCodes[0] . $injection . $splitCodes[1];
 		}
+
 		return $result;
 	}
 
 	/**
 	 * @return Generator<string[]>
+	 * @throws ParseError
 	 */
 	private static function splitByNamespace(string $code) : Generator{
-		$tokens = PhpToken::tokenize("<?php $code");
+		$tokens = PhpToken::tokenize("<?php $code", TOKEN_PARSE);
 		next($tokens);  // Skip the opening tag
 
 		/** @var string[] $splitCode */
