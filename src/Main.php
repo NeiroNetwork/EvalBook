@@ -15,7 +15,7 @@ use pocketmine\plugin\PluginBase;
 
 final class Main extends PluginBase{
 
-	public static Main $instance;
+	private static Main $instance;
 
 	public static function getPlugin() : Main{
 		return self::$instance;
