@@ -16,6 +16,7 @@ final class ChangeBookPermissionCommand extends BaseSubCommand{
 	protected function prepare() : void{
 		$this->setPermission(EvalBookPermissionNames::COMMAND_PERM);
 		$this->registerArgument(0, new PermissionStringEnumArgument("permission"));
+		$this->registerArgument(0, new PermissionStringArgument("permission"));
 	}
 
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void{
