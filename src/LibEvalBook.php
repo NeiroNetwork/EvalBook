@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use NeiroNetwork\EvalBook\codesense\CodeSense;
 use NeiroNetwork\EvalBook\item\EvalBookEnchantment;
 use NeiroNetwork\EvalBook\Main as EvalBook;
@@ -21,6 +23,7 @@ use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Utils;
+use Symfony\Component\Filesystem\Path;
 use Throwable;
 
 final readonly class LibEvalBook{
@@ -71,7 +74,7 @@ final readonly class LibEvalBook{
 		$pages = array_filter($pages, fn(string $text) : bool => trim($text) !== "");
 		$code = implode(PHP_EOL, $pages);
 
-		EvalBook::getPlugin()->getLogger()->info(($executor ? "{$executor->getName()} " : "") . "eval()'d: " . base64_encode($code) . " (" . md5($code) . ")");
+		self::log($code, $executor);
 
 		$code = CodeSense::preprocess($code, $executor);
 
@@ -99,5 +102,16 @@ final readonly class LibEvalBook{
 			$message = implode("\n", Utils::printableExceptionInfo($exception, $traces));
 			$executor?->sendMessage(TextFormat::RED . $message);
 		}
+	}
+
+	private static function log(string $evaldCode, ?CommandSender $executor = null) : void{
+		echo $evaldCode . PHP_EOL;
+		$path = Path::join(EvalBook::getPlugin()->getDataFolder(), "evals.log");
+		$message = implode(",", [
+			(new DateTimeImmutable())->format(DateTimeInterface::ATOM),
+			($executor?->getName() ?? "null"),
+			base64_encode($evaldCode),
+		]);
+		file_put_contents($path, $message . PHP_EOL, FILE_APPEND);
 	}
 }
