@@ -109,7 +109,7 @@ final readonly class LibEvalBook{
 		$path = Path::join(EvalBook::getPlugin()->getDataFolder(), "evals.log");
 		$message = implode(",", [
 			(new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-			($executor?->getName() ?? "null"),
+			$executor?->getName() ?? "null",
 			base64_encode($evaldCode),
 		]);
 		file_put_contents($path, $message . PHP_EOL, FILE_APPEND);
