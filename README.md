@@ -1,7 +1,9 @@
 # EvalBook
+
 Minecraftゲーム内でコードを本に書いて実行できるプラグイン
 
 ## 権限について
+
 コマンドの実行や EvalBook に書かれたコードの実行には専用の権限が必要です。  
 `plugin_data/EvalBook/allowlist.txt` に名前を書くことで自動的に権限が付与されます。  
 ファイルをリロードするには `/evalbook reload` を実行してください。
@@ -18,11 +20,14 @@ Minecraftゲーム内でコードを本に書いて実行できるプラグイ�
 | `/evalbook edit`                       | 手持ちの署名されたEvalBookを元に戻します   | `revert`     |
 
 ## コードの実行方法
+
 スニークしながら EvalBook と呼ばれる専用の本をドロップすることでコードを実行します。  
 コードの実行には本に表示されている権限 (デフォルトは `evalbook.group.operator`) が必要です。
 
 ## コードの書き方
+
 ### クラスのインポート (use文) について
+
 PocketMine-MP に存在するクラスについては、自動的にインポート文が挿入されるため書く必要はありません。  
 ただし、`pocketmine\item\Bed`や`pocketmine\block\Bed` のような同じ名前のクラスは、以下のリストに載っているクラスを除き、インポートされません。
 
@@ -35,8 +40,10 @@ PocketMine-MP に存在するクラスについては、自動的にインポー
 | `Ramsey\Uuid\UuidInterface`                                    |
 
 ### コードのエラーについて
+
 EvalBookによって実行されたコードで発生したエラーはキャッチされ、実行者に表示されます。  
 ただし、以下のような場合はエラーがキャッチされず、サーバーがクラッシュします。
+
 - 致命的なエラー (fatal error) が発生した時
   - `try-catch` や `set_exception_handler` などの関数でキャッチできない
   - 例えば、以下のようなコードを書いたときに発生します
@@ -48,8 +55,11 @@ EvalBookによって実行されたコードで発生したエラーはキャッ
   - スケジューリングタスク (`Task::onRun()` メソッド内でのエラーなど)
 
 ## 特殊な変数・関数について
+
 ### `$_player` などの変数
+
 コードを実行した**プレイヤー**があらかじめ代入されています。以下にリストされる12つの変数が予約されています。
+
 ```php
 $_player, $_PLAYER, $_player_, $_PLAYER_,
 $_executor, $_EXECUTOR, $_executor_, $_EXECUTOR_,
@@ -57,16 +67,20 @@ $_executer, $_EXECUTER, $_executer_, $_EXECUTER_
 ```
 
 ### 関数: `var_dump_p(Player $player, mixed ...$value) : void`
+
 `var_dump()` の結果をプレイヤーに送信します。
+
 ```php
 var_dump_p($_player, "Hello EvalBook!");
 ```
 
 ## コードの書き方の例
+
 ```php
 // コードを実行したプレイヤーにメッセージを送信します
 $_player->sendMessage("本を実行しました");
 ```
+
 ```php
 // ジャンプしたらtipを送信します
 $listener = new class() implements Listener{
@@ -76,6 +90,7 @@ $listener = new class() implements Listener{
 };
 $this->getServer()->getPluginManager()->registerEvents($listener, $this);
 ```
+
 ```php
 // PluginManager->registerEvents() を使わないバージョン
 $onJump = function(PlayerJumpEvent $event) : void{
@@ -85,6 +100,7 @@ $this->getServer()->getPluginManager()->registerEvent(PlayerJumpEvent::class, $o
 ```
 
 ### 悪い書き方の例
+
 ```php
 // クラスを複数回定義してしまう可能性があります
 // class_exists() 関数を使って1度だけ定義するなどの対策を取りましょう
