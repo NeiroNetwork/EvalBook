@@ -16,14 +16,14 @@ final class ErrorHandleableTaskScheduler extends TaskScheduler{
 
 	public function __construct(
 		?string $owner = null,
-		private ?Closure $handler = null
+		private ?Closure $exceptionHandler = null
 	){
 		parent::__construct($owner);
-		if(!is_null($handler)){
+		if(!is_null($exceptionHandler)){
 			Utils::validateCallableSignature(new CallbackType(
 				new ReturnType("bool"),
 				new ParameterType("exception", Throwable::class)
-			), $handler);
+			), $exceptionHandler);
 		}
 	}
 
@@ -31,7 +31,7 @@ final class ErrorHandleableTaskScheduler extends TaskScheduler{
 		try{
 			parent::mainThreadHeartbeat($currentTick);
 		}catch(Throwable $e){
-			if(!is_null($this->handler) && ($this->handler)($e)){
+			if(!is_null($this->exceptionHandler) && ($this->exceptionHandler)($e)){
 				return;
 			}
 			throw $e;
