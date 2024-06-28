@@ -12,6 +12,7 @@ use NeiroNetwork\EvalBook\Main as EvalBook;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissions;
 use NeiroNetwork\EvalBook\sandbox\SandboxPlugin;
 use pocketmine\command\CommandSender;
+use pocketmine\event\Event;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
@@ -102,7 +103,8 @@ final readonly class LibEvalBook{
 
 			$bool1 = ($trace["class"] ?? null) === SandboxPlugin::class && $trace["function"] === "eval";
 			$bool2 = ($trace["class"] ?? null) === TaskScheduler::class && $trace["function"] === "mainThreadHeartbeat";
-			if($bool1 || $bool2){
+			$bool3 = ($trace["class"] ?? null) === Event::class && $trace["function"] === "call";
+			if($bool1 || $bool2 || $bool3){
 				break;
 			}
 		}
