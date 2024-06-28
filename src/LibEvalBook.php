@@ -21,6 +21,7 @@ use pocketmine\item\WritableBookPage;
 use pocketmine\item\WrittenBook;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
+use pocketmine\scheduler\TaskScheduler;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Utils;
 use Symfony\Component\Filesystem\Path;
@@ -90,17 +91,38 @@ final readonly class LibEvalBook{
 			 * メモ: fatal error はどうあがいてもキャッチできない
 			 * 例えば、クラスの間違った継承、同じ名前の関数やクラスを2回以上定義したり…
 			 */
+			self::notifyException($exception, $executor ? [$executor] : null);
+		}
+	}
+	
+	/**
+	 * @param CommandSender[]|null $recipients
+	 */
+	public static function notifyException(Throwable $exception, ?array $recipients = null) : void{
+		$remains = $exception->getTrace();
+		$traces = [];
+		while($trace = array_shift($remains)){
+			$traces[] = $trace;
 
-			$traces = [];
-			foreach($exception->getTrace() as $trace){
-				$traces[] = $trace;
-				if($trace["class"] ?? null === SandboxPlugin::class && $trace["function"] === "eval"){
-					break;
-				}
+			$bool1 = ($trace["class"] ?? null) === SandboxPlugin::class && $trace["function"] === "eval";
+			$bool2 = ($trace["class"] ?? null) === TaskScheduler::class && $trace["function"] === "mainThreadHeartbeat";
+			if($bool1 || $bool2){
+				break;
 			}
+		}
 
-			$message = implode("\n", Utils::printableExceptionInfo($exception, $traces));
-			$executor?->sendMessage(TextFormat::RED . $message);
+		$lines = Utils::printableExceptionInfo($exception, $traces);
+		if(count($remains) > 0){
+			array_splice($lines, count($traces) + 2, 0, ["   and " . count($remains) . " more..."]);
+		}
+		$message = TextFormat::RED . implode("\n", $lines);
+		
+		if(is_null($recipients)){
+			EvalBook::getPlugin()->getLogger()->info($message);
+			$recipients = EvalBookOperators::getInstance()->getOnlineOperators();
+		}
+		foreach($recipients as $recipient){
+			$recipient->sendMessage($message);
 		}
 	}
 
