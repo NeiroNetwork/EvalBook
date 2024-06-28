@@ -87,10 +87,6 @@ final readonly class LibEvalBook{
 				$executor?->sendMessage($output);
 			}
 		}catch(Throwable $exception){
-			/**
-			 * メモ: fatal error はどうあがいてもキャッチできない
-			 * 例えば、クラスの間違った継承、同じ名前の関数やクラスを2回以上定義したり…
-			 */
 			self::notifyException($exception, $executor ? [$executor] : null);
 		}
 	}
