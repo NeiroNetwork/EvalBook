@@ -19,6 +19,7 @@ final class ErrorHandleableTaskScheduler extends TaskScheduler{
 		private ?Closure $exceptionHandler = null
 	){
 		parent::__construct($owner);
+		
 		if(!is_null($exceptionHandler)){
 			Utils::validateCallableSignature(new CallbackType(
 				new ReturnType("bool"),
