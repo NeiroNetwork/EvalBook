@@ -5,23 +5,26 @@ declare(strict_types=1);
 namespace NeiroNetwork\EvalBook\command;
 
 use CortexPE\Commando\BaseCommand;
-use NeiroNetwork\EvalBook\command\sub\CustomNameCommand;
-use NeiroNetwork\EvalBook\command\sub\NewCommand;
-use NeiroNetwork\EvalBook\command\sub\PermCommand;
-use NeiroNetwork\EvalBook\command\sub\ReloadCommand;
 use NeiroNetwork\EvalBook\permission\EvalBookPermissionNames;
 use pocketmine\command\CommandSender;
+use pocketmine\plugin\Plugin;
 
-class EvalBookCommand extends BaseCommand{
+final class EvalBookCommand extends BaseCommand{
+
+	public static function create(Plugin $plugin) : self{
+		return new self($plugin, "evalbook", "EvalBook commands");
+	}
 
 	protected function prepare() : void{
 		$this->setPermission(EvalBookPermissionNames::COMMAND);
 
 		$subCommands = [
 			new ReloadCommand($this->plugin, "reload", "Reload permitted operators configuration file"),
-			new NewCommand($this->plugin, "new", "Get a new eval book", ["get", "give"]),
-			new PermCommand($this->plugin, "perm", "Set the book's execution permission", ["permission"]),
-			new CustomNameCommand($this->plugin, "customname", "Rename the book", ["name"]),
+			new ChangeBookPermissionCommand($this->plugin, "perm", "Set the book's execution permission", ["permission"]),
+			new ChangeBookNameCommand($this->plugin, "name", "Rename the book", ["customname"]),
+			new GetBookCommand($this->plugin, "get", "Get a new eval book", ["new"]),
+			new GiveCommand($this->plugin, "give", "Give an empty eval book to a player"),
+			new RevertBookSignatureCommand($this->plugin, "edit", "Revert a signed EvalBook to a writable book", ["revert"]),
 		];
 		foreach($subCommands as $subCommand){
 			$this->registerSubCommand($subCommand);

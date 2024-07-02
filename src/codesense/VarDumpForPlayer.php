@@ -44,7 +44,7 @@ namespace {
 
 namespace NeiroNetwork\EvalBook\codesense{
 
-	class VarDumpForPlayer{
+	final readonly class VarDumpForPlayer{
 
 		public function __construct(){
 			// NOOP

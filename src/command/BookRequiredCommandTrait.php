@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\EvalBook\command\sub;
+namespace NeiroNetwork\EvalBook\command;
 
-use NeiroNetwork\EvalBook\item\ExecutableBook;
+use NeiroNetwork\EvalBook\LibEvalBook;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Human;
 use pocketmine\item\WritableBookBase;
 
-trait BookInHandCommandTrait{
+trait BookRequiredCommandTrait{
 
-	protected function getBook(CommandSender $sender) : ?WritableBookBase{
+	protected function getBookInHand(CommandSender $sender) : ?WritableBookBase{
 		if(!$sender instanceof Human){
 			$sender->sendMessage("§cRun this command in-game!");
 			return null;
 		}
 
 		$item = $sender->getInventory()->getItemInHand();
-		if(!ExecutableBook::validItem($item)){
+		if(!LibEvalBook::isEvalBook($item)){
 			$sender->sendMessage("§cHold the book in your hand and then run the command!");
 			return null;
 		}
