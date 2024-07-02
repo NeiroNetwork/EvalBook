@@ -113,8 +113,8 @@ final readonly class LibEvalBook{
 		if(count($remains) > 0){
 			array_splice($lines, count($traces) + 2, 0, ["   and " . count($remains) . " more..."]);
 		}
-		$message = TextFormat::RED . implode("\n", $lines);
-		
+		$message = TextFormat::RED . str_replace("\x00", "", implode("\n", $lines));
+
 		if(is_null($recipients)){
 			EvalBook::getPlugin()->getLogger()->info($message);
 			$recipients = EvalBookOperators::getInstance()->getOnlineOperators();
