@@ -1,6 +1,6 @@
 # EvalBook
 
-Minecraftゲーム内でコードを本に書いて実行できるプラグイン
+Minecraft ゲーム内でコードを本に書いて実行できるプラグイン
 
 ## 権限について
 
@@ -41,18 +41,16 @@ PocketMine-MP に存在するクラスについては、自動的にインポー
 
 ### コードのエラーについて
 
-EvalBookによって実行されたコードで発生したエラーはキャッチされ、実行者に表示されます。  
-ただし、以下のような場合はエラーがキャッチされず、サーバーがクラッシュします。
+EvalBookによるコードで発生したエラーはキャッチされ、実行者あるいは全体に通知されます。  
+ただし、fatal error が発生した場合はエラーがキャッチされず、サーバーがクラッシュします。
 
-- 致命的なエラー (fatal error) が発生した時
-  - `try-catch` や `set_exception_handler` などの関数でキャッチできない
-  - 例えば、以下のようなコードを書いたときに発生します
-    - 同じ名前のクラスや関数が複数回定義する
-    - 誤ったクラスやインターフェースの継承(extends)、実装(implements)
-    - 同じクラス名のインポートを複数回行う
-- PocketMine-MP によって関数がコールされ、処理された中でエラーが発生した時
-  - イベントハンドリング (`Listener` クラス内でのエラーなど)
-  - スケジューリングタスク (`Task::onRun()` メソッド内でのエラーなど)
+#### fatal error の例
+
+:warning: これらは `try-catch` や `set_exception_handler` を使ってもキャッチできません。
+
+- 同じ名前のクラスや関数を2回以上定義しようとしたとき
+- クラスの誤った継承(extends)や実装(implements)
+- 同じクラス名を複数回インポートしようとしたとき
 
 ## 特殊な変数・関数について
 
@@ -97,27 +95,4 @@ $onJump = function(PlayerJumpEvent $event) : void{
     $event->getPlayer()->sendTip("ジャンプしたよ");
 };
 $this->getServer()->getPluginManager()->registerEvent(PlayerJumpEvent::class, $onJump, EventPriority::NORMAL, $this);
-```
-
-### 悪い書き方の例
-
-```php
-// クラスを複数回定義してしまう可能性があります
-// class_exists() 関数を使って1度だけ定義するなどの対策を取りましょう
-class MyEventListener implements Listener{
-    // 例えば、メンションされたプレイヤーを取得したい としましょう
-    public function onChat(PlayerChatEvent $event) : void{
-        /**
-         * 以下に、ミスの例を記載します
-         * IDEやテキストエディタを使用すれば、ある程度のミスは防げますが
-         * try-catch で囲うなどした方が良いでしょう
-         */
-        // getMessage を getMesasge とタイポしています
-        $name = substr($event->getMesasge(), 1);
-        // $this->getServer() という関数は存在しません
-        $target = $this->getServer()->getPlayerByPrefix($name);
-        // プレイヤーが存在するかどうかチェックしていません
-        $target->sendMessage("メンションされた！");
-    }
-}
 ```
