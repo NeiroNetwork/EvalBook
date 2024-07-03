@@ -2,11 +2,15 @@
 
 Minecraft ゲーム内でコードを本に書いて実行できるプラグイン
 
-## 権限について
+## 使い方
 
-コマンドの実行や EvalBook に書かれたコードの実行には専用の権限が必要です。  
-`plugin_data/EvalBook/allowlist.txt` に名前を書くことで自動的に権限が付与されます。  
-ファイルをリロードするには `/evalbook reload` を実行してください。
+1. [リリースページ](https://github.com/NeiroNetwork/EvalBook/releases/latest) から最新の `EvalBook_vX.Y.Z.phar` をダウンロードし、`plugins` フォルダーに移動させます。
+2. コードを書きやすくするために [EditerBook](https://github.com/NeiroNetwork/EditerBook/releases/latest) というリソースパックを入れることをおススメします。  
+3. サーバーを起動します。
+4. `plugin_data/EvalBook/allowlist.txt` に自分のゲーマータグを記入します。
+5. コンソールで `evalbook reload` コマンドを実行します。
+6. サーバーに接続し `/evalbook get` で本を入手します。
+7. コードを実行するには、スニークしながら本を捨てます。
 
 ## コマンド
 
@@ -19,12 +23,43 @@ Minecraft ゲーム内でコードを本に書いて実行できるプラグイ�
 | `/evalbook name <any string>`          | 手持ちのEvalBookのアイテムの名前を変更します | `customname` |
 | `/evalbook edit`                       | 手持ちの署名されたEvalBookを元に戻します   | `revert`     |
 
-## コードの実行方法
+## コードの例
 
-スニークしながら EvalBook と呼ばれる専用の本をドロップすることでコードを実行します。  
-コードの実行には本に表示されている権限 (デフォルトは `evalbook.group.operator`) が必要です。
+```php
+// コードを実行したプレイヤーにメッセージを送信します
+$_player->sendMessage("Hello, EvalBook!");
+```
 
-## コードの書き方
+```php
+// ジャンプしたらtipを送信します
+$listener = new class() implements Listener{
+    public function onJump(PlayerJumpEvent $event) : void{
+        $event->getPlayer()->sendTip("Jump!");
+    }
+};
+$this->getServer()->getPluginManager()->registerEvents($listener, $this);
+```
+
+```php
+// PluginManager->registerEvents() を使わないバージョン
+$onJump = function(PlayerJumpEvent $event) : void{
+    $event->getPlayer()->sendTip("Jump!");
+};
+$this->getServer()->getPluginManager()->registerEvent(PlayerJumpEvent::class, $onJump, EventPriority::NORMAL, $this);
+```
+
+```php
+// 1秒ごとに実行者にメッセージを送る
+$task = new ClosureTask(fn() => $_player->sendMessage("Repeating task is easy"));
+$this->getScheduler()->scheduleRepeatingTask($task, 20);
+```
+
+## EvalBook の詳細
+
+### 実行権限について
+
+本に書かれているコードを実行するには、アイテムの lore の 1 行目に表示されている権限が必要です。  
+デフォルトは `evalbook.group.operator` になっています。変更するには `/evalbook perm` コマンドを使用します。
 
 ### クラスのインポート (use文) について
 
@@ -52,9 +87,9 @@ EvalBookによるコードで発生したエラーはキャッチされ、実行
 - クラスの誤った継承(extends)や実装(implements)
 - 同じクラス名を複数回インポートしようとしたとき
 
-## 特殊な変数・関数について
+### 特殊な変数・関数について
 
-### `$_player` などの変数
+#### 予約変数
 
 コードを実行した**プレイヤー**があらかじめ代入されています。以下にリストされる12つの変数が予約されています。
 
@@ -64,35 +99,7 @@ $_executor, $_EXECUTOR, $_executor_, $_EXECUTOR_,
 $_executer, $_EXECUTER, $_executer_, $_EXECUTER_
 ```
 
-### 関数: `var_dump_p(Player $player, mixed ...$value) : void`
+#### デバッグ用関数
 
-`var_dump()` の結果をプレイヤーに送信します。
-
-```php
-var_dump_p($_player, "Hello EvalBook!");
-```
-
-## コードの書き方の例
-
-```php
-// コードを実行したプレイヤーにメッセージを送信します
-$_player->sendMessage("本を実行しました");
-```
-
-```php
-// ジャンプしたらtipを送信します
-$listener = new class() implements Listener{
-    public function onJump(PlayerJumpEvent $event) : void{
-        $event->getPlayer()->sendTip("ジャンプしたよ");
-    }
-};
-$this->getServer()->getPluginManager()->registerEvents($listener, $this);
-```
-
-```php
-// PluginManager->registerEvents() を使わないバージョン
-$onJump = function(PlayerJumpEvent $event) : void{
-    $event->getPlayer()->sendTip("ジャンプしたよ");
-};
-$this->getServer()->getPluginManager()->registerEvent(PlayerJumpEvent::class, $onJump, EventPriority::NORMAL, $this);
-```
+- `var_dump_p(Player $player, mixed ...$value) : void`
+  - `var_dump()` の結果をプレイヤーに送信します。
