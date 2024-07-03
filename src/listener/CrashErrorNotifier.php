@@ -4,28 +4,35 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\EvalBook\listener;
 
-use NeiroNetwork\EvalBook\utils\CrashTracer;
+use NeiroNetwork\EvalBook\ServerCrashTracer;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskScheduler;
 
-class CrashErrorNotifier implements Listener{
+final class CrashErrorNotifier implements Listener{
 
 	private array $sentPlayers = [];
 
-	public function __construct(private TaskScheduler $scheduler){}
+	public function __construct(
+		private readonly TaskScheduler $scheduler,
+	){}
 
+	/** @noinspection PhpUnused */
 	public function onJoin(PlayerJoinEvent $event) : void{
 		$player = $event->getPlayer();
-		$name = $player->getName();
+		$error = ServerCrashTracer::getInstance()->getErrorMessage();
 
-		if(!CrashTracer::hasError() || isset($this->sentPlayers[$name])) return;
+		if(isset($this->sentPlayers[$player->getName()]) || is_null($error)){
+			return;
+		}
 
-		$this->sentPlayers[$name] = true;
-
-		$this->scheduler->scheduleDelayedTask(new ClosureTask(
-			fn() => $player->sendMessage("EvalBookによるクラッシュを検出しました:\n§c" . CrashTracer::getErrorMessage())
-		), 20);
+		$this->scheduler->scheduleDelayedTask(new ClosureTask(function() use ($player, $error){
+			if(!$player->isOnline()){
+				return;
+			}
+			$player->sendMessage("EvalBook によるクラッシュを検出しました:\n§c$error");
+			$this->sentPlayers[$player->getName()] = true;
+		}), 20);
 	}
 }
