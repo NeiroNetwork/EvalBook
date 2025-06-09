@@ -15,7 +15,7 @@ final readonly class FakePluginLoader implements PluginLoader{
 		return true;
 	}
 
-	public function loadPlugin(string $file) : void{}
+	public function loadPlugin(string $file, PluginDescription $description) : void{}
 
 	public function getPluginDescription(string $file) : ?PluginDescription{
 		return null;
