@@ -15,7 +15,7 @@ abstract class FakePluginBase extends PluginBase{
 	public static function create(string $name, string $version) : static{
 		return new static(new FakePluginLoader(),
 			Server::getInstance(),
-			new PluginDescription(["name" => $name, "version" => $version, "main" => static::class, "api" => ["5.0.0"]]),
+			new PluginDescription(["name" => $name, "version" => $version, "main" => static::class, "api" => ["6.0.0"]]),
 			Path::join(EvalBook::getPlugin()->getDataFolder(), "sandbox"),
 			uniqid("plugin_", true),
 			new FakeResourceProvider());
